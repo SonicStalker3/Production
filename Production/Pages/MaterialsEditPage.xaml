@@ -6,9 +6,72 @@
       xmlns:local="clr-namespace:Production.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MaterialsEditPage">
+      Title="MaterialsEditPage"
+      >
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" ItemsSource="{Binding Materials}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Blue" BorderThickness="1" CornerRadius="5" Margin="5" Width="800" Height="255">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Source="{Binding Image}" Margin="5" Loaded="Image_Loaded" Stretch="Fill" Height="150" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Margin="0,30,0,0">
+                                <TextBlock TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="5" VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource MultiValueToStringConverter}">
+                                            <!--StringFormat='{}{0} | {1}'-->
+                                            <Binding Path="Name"/>
+                                            <Binding Path="MaterialType.Tittle"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Text="{Binding Suppliers, StringFormat='Поставщики: {0}',Converter={StaticResource SuppliersToStringConverter}}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
+                                <TextBlock Text="{Binding Suppliers, StringFormat='Поставщики: {0}',Converter={StaticResource SuppliersToStringConverter}}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
+                                <TextBlock Text="{Binding Price, StringFormat='Цена: {0:N2} ₽'}" FontWeight="Bold" Margin="5" VerticalAlignment="Top"/>
+                            </StackPanel>
+                            <!--<TextBlock Grid.Row="4" Text="{Binding Актуален, Converter={StaticResource BoolToYesNoConverter}}" Margin="5" VerticalAlignment="Top"/>-->
+                            <!--<Button Content="Редактировать" Grid.Row="5"/>-->
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ListView>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <!-- Для кнопки "Добавить" -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Промежуток между кнопками -->
+                <ColumnDefinition Width="*"/>
+                <!-- Для кнопки "Удалить" -->
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Margin="10,5,0,5" HorizontalAlignment="Left" Click="AddButton_Click">
+                <TextBlock Margin="5">Добавить</TextBlock>
+            </Button>
+            <Button Grid.Column="1" Margin="0,5,10,5" HorizontalAlignment="Right" Click="BackButton_Click">
+                <TextBlock Margin="5">Назад</TextBlock>
+            </Button>
+            <Button Grid.Column="2" Margin="0,5,10,5" HorizontalAlignment="Right" Click="RemoveButton_Click">
+                <TextBlock Margin="5">Удалить</TextBlock>
+            </Button>
+
+        </Grid>
     </Grid>
 </Page>

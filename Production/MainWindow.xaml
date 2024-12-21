@@ -5,16 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Production"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Icon="pack://application:,,,/icon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="5*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
 
         </Grid.ColumnDefinitions>
-        <Frame Grid.Row="1" Source=""/>
+        <Grid Background="#D32B39">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="/icon.png"/>
+            <StackPanel Grid.Column="1">
+                <TextBlock HorizontalAlignment="Center" FontSize="18">Большая пачка</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding PageTitle}"/>
+            </StackPanel>
+        </Grid>
+        <Frame x:Name="MainFrame" Grid.Row="1" Source="Pages/LoginPage.xaml"/>
+        <Grid Grid.Row="2" Background="#FFC1C1"></Grid>
     </Grid>
 </Window>

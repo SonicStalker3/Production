@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Production.DB;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Production.Pages
 {
@@ -21,30 +24,23 @@ namespace Production.Pages
     /// </summary>
     public partial class LoginPage : Page
     {
-        public HotelEntities _context = HotelEntities.GetContext();
+        ProductionEntities _context = DBContext.GetContext();
         public LoginPage()
         {
             InitializeComponent();
         }
         public void LoginButtonClick(object sender, RoutedEventArgs e)
         {
-            string username = UserName.Text; // Предполагается, что у вас есть TextBox для имени пользователя
-            string password = UserPassword.Password; // Предполагается, что у вас есть PasswordBox для пароля
+            string username = UserName.Text;
+            string password = UserPassword.Password;
 
-            Пользователи user = AuthenticateUser(username, password);
+            User user = AuthenticateUser(username, password);
             if (user != null)
             {
                 // Выдача привилегий
                 //AssignPrivileges(user);
 
-                // Получаем ссылку на главное окно
-                /*                MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
-                                if (mainWindow != null)
-                                {
-                                    mainWindow.SetUser(user); // Передаем пользователя в главное окно
-                                }*/
-
-                if (user.RoleID != 0)
+                if (user.RoleID == 0)
                 {
                     NavigationService.Navigate(new EditViewChoicePage(user));
                 }
@@ -61,10 +57,16 @@ namespace Production.Pages
             }
         }
 
-        private Пользователи AuthenticateUser(string username, string password)
+        private User AuthenticateUser(string username, string password)
         {
+            var user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.UserName == username);
+            if (user != null && user.PasswordHash == HashPassword(password))
+            {
+                return user; // Возвращаем пользователя, если пароли совпадают
+            }
+            //Clipboard.SetText(HashPassword(password));
 
-            return _context.Пользователи.Include(u => u.Роли).FirstOrDefault(u => u.ИмяПользователя == username && u.Пароль == password); //.Include(u => u.RoleID)
+            return null;
         }
 
         private string HashPassword(string password)
@@ -72,6 +74,7 @@ namespace Production.Pages
             using (var sha256 = SHA256.Create())
             {
                 var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                
                 return Convert.ToBase64String(bytes);
             }
         }

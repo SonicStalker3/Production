@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Production.DB;
 
 namespace Production.Pages
 {
@@ -20,21 +21,21 @@ namespace Production.Pages
     /// </summary>
     public partial class EditViewChoicePage : Page
     {
-        public Пользователи user;
+        public User user;
 
-        public EditViewChoicePage(Пользователи user)
+        public EditViewChoicePage(User user)
         {
             InitializeComponent();
             switch (user.RoleID)
             {
                 case 0:
-                    EditHotelBtn.IsEnabled = false;
-                    EditTourBtn.IsEnabled = false;
+                    EditHotelBtn.IsEnabled = true;
+                    EditTourBtn.IsEnabled = true;
                     ViewTourBtn.IsEnabled = true;
                     break;
                 case 1:
-                    EditHotelBtn.IsEnabled = true;
-                    EditTourBtn.IsEnabled = true;
+                    EditHotelBtn.IsEnabled = false;
+                    EditTourBtn.IsEnabled = false;
                     ViewTourBtn.IsEnabled = true;
                     break;
                 case 2:
@@ -73,10 +74,5 @@ namespace Production.Pages
         {
             NavigationService.GoBack();
         }
-    }
-
-    public class Пользователи
-    {
-        public int RoleID;
     }
 }

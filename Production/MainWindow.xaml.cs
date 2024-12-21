@@ -20,9 +20,20 @@ namespace Production
     /// </summary>
     public partial class MainWindow : Window
     {
+        public string PageTitle { get; set; }
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        /*private void MainFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            var frame = sender as Frame;
+            if (frame != null && frame.Content is Page pageWithTitle)
+            {
+                //MessageBox.Show();
+                PageTitle = pageWithTitle.Title;
+            }
+        }*/
     }
 }

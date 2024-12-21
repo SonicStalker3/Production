@@ -7,8 +7,153 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MaterialEditPage">
-
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto">
+            <StackPanel Margin="10">
+                <!-- Поле для наименования материала -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Наименование материала:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="NameField" Grid.Column="1" MinWidth="200" Text="{Binding Name, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для типа материала -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Тип материала:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="MaterialTypeField" Grid.Column="1" MinWidth="200" Text="{Binding MaterialType, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для возможных поставщиков -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Поставщики:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="SuppliersField" Grid.Column="1" MinWidth="200" Text="{Binding Suppliers, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для количества в упаковке -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Количество в упаковке:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="PackageQuantityField" Grid.Column="1" MinWidth="200" Text="{Binding PackageQuantity, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для единицы измерения -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Единица измерения:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="UnitField" Grid.Column="1" MinWidth="200" Text="{Binding Unit, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для количества на складе -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Количество на складе:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="StockQuantityField" Grid.Column="1" MinWidth="200" Text="{Binding StockQuantity, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для минимального допустимого количества -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Минимальное допустимое количество:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="MinQuantityField" Grid.Column="1" MinWidth="200" Text="{Binding MinQuantity, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для описания материала -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Описание:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="DescriptionField" Grid.Column="1" MinWidth="200" Text="{Binding Description, Mode=TwoWay}" AcceptsReturn="True" Height="100"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для изображения материала -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Изображение:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="ImageField" Grid.Column="1" MinWidth="200" Text="{Binding Image, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
+                <!-- Поле для стоимости материала -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Стоимость:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="PriceField" Grid.Column="1" MinWidth="200" Text="{Binding Price, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Click="BackButton_Click" Margin="5">
+                <TextBlock Margin="5">Назад</TextBlock>
+            </Button>
+            <Button Click="ChangeButton_Click" Margin="5">
+                <TextBlock Margin="5">Добавить</TextBlock>
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>

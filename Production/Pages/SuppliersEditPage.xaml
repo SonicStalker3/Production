@@ -7,33 +7,51 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SuppliersEditPage">
-    <Grid Background="AliceBlue">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <ListView Grid.Row="0" ItemsSource="{Binding Materials}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Blue" BorderThickness="1" CornerRadius="5" Margin="5" Width="225" Height="400">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Для названия -->
+                                <RowDefinition Height="*"/>
+                                <!-- Для изображения -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Для описания -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Для цены -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Для актуальности -->
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-        <DataGrid x:Name="DGridHotel"
-  AutoGenerateColumns="False"                  
-  Margin="10" 
-  HorizontalAlignment="Stretch" 
-  VerticalAlignment="Stretch" 
-  Grid.Row="0"
-  IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Имя поставщика" Binding="{Binding Название}"/>
-                <DataGridTextColumn Header="ИНН" Binding="{Binding ДатаНачала}"/>
-                <DataGridTextColumn Header="Тип" Binding="{Binding ДатаОкончания}"/>
-                <DataGridTemplateColumn Header=" ">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Редактировать" Command="{Binding EditCommand}" Style="{StaticResource EditButton}" Click="EditButtonClick"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-
+                            <Image Grid.Row="1" Source="{Binding Image}" Loaded="Image_Loaded" Stretch="Fill" Height="200" VerticalAlignment="Top"/>
+                            <TextBlock TextWrapping="Wrap" Grid.Row="0" Text="{Binding Name}" FontWeight="Bold" FontSize="16" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <TextBlock Grid.Row="2" Text="{Binding Description}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
+                            <TextBlock Grid.Row="3" Text="{Binding Price, StringFormat='Цена: {0:N2} ₽'}" FontWeight="Bold" Margin="5" VerticalAlignment="Top"/>
+                            
+                            <!--<TextBlock Grid.Row="4" Text="{Binding Актуален, Converter={StaticResource BoolToYesNoConverter}}" Margin="5" VerticalAlignment="Top"/>-->
+                            <Button Content="Редактировать" Grid.Row="5"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ListView>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -47,7 +65,7 @@
             <Button Grid.Column="0" Margin="10,5,0,5" HorizontalAlignment="Left" Click="AddButton_Click">
                 <TextBlock Margin="5">Добавить</TextBlock>
             </Button>
-            <Button Grid.Column="1" Margin="0,5,10,5" HorizontalAlignment="Right" Click="BackBtn_Click">
+            <Button Grid.Column="1" Margin="0,5,10,5" HorizontalAlignment="Right" Click="BackButton_Click">
                 <TextBlock Margin="5">Назад</TextBlock>
             </Button>
             <Button Grid.Column="2" Margin="0,5,10,5" HorizontalAlignment="Right" Click="RemoveButton_Click">

@@ -7,133 +7,69 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SupplierEditPage">
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
         <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto">
-            <StackPanel Margin="10" Grid.Row="0">
+            <StackPanel Margin="10">
+
+                <!-- Поле для наименования поставщика -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*"/>
                         <ColumnDefinition Width="0.75*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Название:</TextBlock>
+                        <TextBlock TextWrapping="Wrap">Наименование поставщика:</TextBlock>
                     </Label>
-                    <TextBox x:Name="TitleField" Grid.Column="1" MinWidth="200" Text="{Binding Название, Mode=TwoWay}"/>
+                    <TextBox x:Name="SupplierNameField" Grid.Column="1" MinWidth="200" Text="{Binding SupplierName, Mode=TwoWay}"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
+                <!-- Поле для ИНН -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*"/>
                         <ColumnDefinition Width="0.75*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Описание:</TextBlock>
+                        <TextBlock TextWrapping="Wrap">ИНН:</TextBlock>
                     </Label>
-                    <TextBox x:Name="DescriptionField" Grid.Column="1" MinWidth="200" Text="{Binding Описание, Mode=TwoWay}" AcceptsReturn="True" Height="100"/>
+                    <TextBox x:Name="INNField" Grid.Column="1" MinWidth="200" Text="{Binding INN, Mode=TwoWay}"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
+                <!-- Поле для типа поставщика -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*"/>
                         <ColumnDefinition Width="0.75*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Цена:</TextBlock>
+                        <TextBlock TextWrapping="Wrap">Тип поставщика:</TextBlock>
                     </Label>
-                    <TextBox x:Name="PriceField" Grid.Column="1" MinWidth="200" Text="{Binding Цена, Mode=TwoWay}"/>
+                    <ComboBox x:Name="SupplierTypeField" Grid.Column="1" MinWidth="200" SelectedItem="{Binding SupplierType}">
+                        <ComboBoxItem Content="ООО"/>
+                        <ComboBoxItem Content="ИП"/>
+                        <ComboBoxItem Content="Самозанятый"/>
+                        <ComboBoxItem Content="ОА"/>
+                    </ComboBox>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
+                <!-- Поле для истории поставок -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*"/>
                         <ColumnDefinition Width="0.75*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Дата начала:</TextBlock>
+                        <TextBlock TextWrapping="Wrap">История поставок:</TextBlock>
                     </Label>
-                    <DatePicker x:Name="StartDateField" Grid.Column="1" SelectedDate="{Binding ДатаНачала, Mode=TwoWay}"/>
-                </Grid>
-                <Separator Visibility="Hidden" Height="20"/>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.25*"/>
-                        <ColumnDefinition Width="0.75*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Дата окончания:</TextBlock>
-                    </Label>
-                    <DatePicker x:Name="EndDateField" Grid.Column="1" SelectedDate="{Binding ДатаОкончания, Mode=TwoWay}"/>
-                </Grid>
-                <Separator Visibility="Hidden" Height="20"/>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.25*"/>
-                        <ColumnDefinition Width="0.75*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Актуален:</TextBlock>
-                    </Label>
-                    <CheckBox x:Name="IsActiveField" Grid.Column="1" IsChecked="{Binding Актуален, Mode=TwoWay}"/>
-                </Grid>
-                <Separator Visibility="Hidden" Height="20"/>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.25*"/>
-                        <ColumnDefinition Width="0.75*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Изображение:</TextBlock>
-                    </Label>
-                    <TextBox x:Name="ImageField" Grid.Column="1" MinWidth="200" Text="{Binding Изображение, Mode=TwoWay}"/>
-                </Grid>
-                <Separator Visibility="Hidden" Height="20"/>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.25*"/>
-                        <ColumnDefinition Width="0.75*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Отель:</TextBlock>
-                    </Label>
-                    <ComboBox x:Name="HotelList" SelectedItem="{Binding HotelID}" Grid.Column="1" MinWidth="200" DisplayMemberPath="Название"/>
-                </Grid>
-                <Separator Visibility="Hidden" Height="20"/>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.25*"/>
-                        <ColumnDefinition Width="0.75*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Страна:</TextBlock>
-                    </Label>
-                    <ComboBox x:Name="CountryList" SelectedItem="{Binding CountryID}" Grid.Column="1" MinWidth="200" DisplayMemberPath="Название"/>
-                </Grid>
-                <Separator Visibility="Hidden" Height="20"/>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.25*"/>
-                        <ColumnDefinition Width="0.75*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">
-                        <TextBlock TextWrapping="Wrap">Тип тура:</TextBlock>
-                    </Label>
-                    <!--<ComboBox x:Name="TourTypeList" SelectedItem="{Binding TourTypesID}" Grid.Column="1" MinWidth="200" DisplayMemberPath="Название"/>-->
-                    <!--<local:CheckedListBox x:Name="TourTypeList" SelectedValue="{Binding TourTypesID}" Grid.Column="1" MinWidth="200" DisplayMemberPath="Название" Items="{Binding ТипыТуров}"/>-->
-
+                    <TextBox x:Name="SupplyHistoryField" Grid.Column="1" MinWidth="200" Text="{Binding SupplyHistory, Mode=TwoWay}" AcceptsReturn="True" Height="100"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
             </StackPanel>
