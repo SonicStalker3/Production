@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Input;
 using Production.DB;
+using Production.Pages.EditingPages;
 
 namespace Production.Pages
 {
@@ -26,13 +21,11 @@ namespace Production.Pages
     public partial class MaterialsEditPage : Page
     {
         ProductionEntities _context = DBContext.GetContext();
-        public ObservableCollection<Material> Materials { get; set; }
+        public ObservableCollection<Material> Materials { get; set; } = new ObservableCollection<Material>();
 
         public MaterialsEditPage()
         {
             this.DataContext = this;
-
-            Materials = new ObservableCollection<Material>();
             Task task = LoadMaterialsAsync();
 
             InitializeComponent();
@@ -80,29 +73,19 @@ namespace Production.Pages
 
         private void Image_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender is System.Windows.Controls.Image image &&
-                (image.Source == null ||
-                string.IsNullOrWhiteSpace((image.Source as BitmapImage).UriSource?.ToString()
-                )))
+            if(sender is System.Windows.Controls.Image image)
             {
-                BitmapImage errorImage = BitmapToBitmapImage(Properties.Resources.ErrorImage);
-                image.Source = errorImage;
+                if (image.DataContext is Material material)
+                {
+                    if (material.Image == null || material.Image.Length == 0)
+                    {
+                        BitmapImage errorImage = BitmapToBitmapImage(Properties.Resources.ErrorImage);
+                        image.Source = errorImage;
+                    }
+                }
             }
         }
 
-        public BitmapImage ByteArrayToBitmapImage(byte[] byteArray)
-        {
-            using (var stream = new MemoryStream(byteArray))
-            {
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = stream;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad; // Загружает изображение в память
-                bitmapImage.EndInit();
-                bitmapImage.Freeze(); // Замораживает объект для использования в других потоках
-                return bitmapImage;
-            }
-        }
         private BitmapImage BitmapToBitmapImage(System.Drawing.Bitmap bitmap)
         {
             using (MemoryStream memoryStream = new MemoryStream())
@@ -122,8 +105,7 @@ namespace Production.Pages
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            /*            var selectedHotel = DGridHotel.SelectedItem as Отель;
-                        NavigationService.Navigate(new AddEditHotelsPage(null));*/
+            NavigationService.Navigate(new MaterialEditPage(null));
         }
 
         private void EditButtonClick(object sender, RoutedEventArgs e)
@@ -132,16 +114,48 @@ namespace Production.Pages
                         NavigationService.Navigate(new AddEditHotelsPage(selectedHotel));*/
         }
 
-        private void RemoveButton_Click(object sender, RoutedEventArgs e)
-        {
-            /*            var selectedHotel = DGridHotel.SelectedItem as Отель;
-                        HotelEntities.GetContext().Отель.Remove(selectedHotel);
-                        HotelEntities.GetContext().SaveChanges();*/
-        }
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+        }
+
+        private void Material_Selected(object sender, MouseButtonEventArgs e)
+        {
+            if ((sender as ListView).SelectedItem is Material selectedMaterial)
+            {
+                NavigationService.Navigate(new MaterialEditPage(selectedMaterial));
+            }
+        }
+
+        private void Materials_Selected(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void SearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void SortComboBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void SortComboBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FiltrationComboBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FiltrationComboBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

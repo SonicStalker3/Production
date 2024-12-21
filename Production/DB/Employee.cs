@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;

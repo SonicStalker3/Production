@@ -7,17 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class SupplyHistory
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int SupplyHistoryID { get; set; }
+        public Nullable<int> SupplierID { get; set; }
+        public Nullable<int> MaterialID { get; set; }
+        public Nullable<System.DateTime> SupplyDate { get; set; }
+        public Nullable<int> Quantity { get; set; }
+        public Nullable<int> QualityRating { get; set; }
+    
+        public virtual Material Material { get; set; }
     }
 }

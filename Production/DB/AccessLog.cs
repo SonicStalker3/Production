@@ -7,20 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class SupplyHistory
+    public partial class AccessLog
     {
-        public int SupplyHistoryID { get; set; }
-        public Nullable<int> SupplierID { get; set; }
-        public Nullable<int> MaterialID { get; set; }
-        public Nullable<System.DateTime> SupplyDate { get; set; }
-        public Nullable<int> Quantity { get; set; }
-        public Nullable<int> QualityRating { get; set; }
-    
-        public virtual Material Material { get; set; }
+        public int AccessLogID { get; set; }
+        public Nullable<int> EmployeeID { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public string Location { get; set; }
     }
 }

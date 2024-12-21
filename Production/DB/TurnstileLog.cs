@@ -7,23 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class OrdersStatu
+    public partial class TurnstileLog
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public OrdersStatu()
-        {
-            this.Orders = new HashSet<Order>();
-        }
-    
-        public int OrdersStatusID { get; set; }
-        public string Tittle { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders { get; set; }
+        public int TurnstileLogID { get; set; }
+        public Nullable<int> EmployeeID { get; set; }
+        public Nullable<System.DateTime> EntryTime { get; set; }
+        public Nullable<System.DateTime> ExitTime { get; set; }
+        public Nullable<int> Breakpoint { get; set; }
     }
 }

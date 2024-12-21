@@ -29,24 +29,44 @@ namespace Production.Pages
             switch (user.RoleID)
             {
                 case 0:
+                    /*
                     EditHotelBtn.IsEnabled = true;
                     EditTourBtn.IsEnabled = true;
                     ViewTourBtn.IsEnabled = true;
+                    */
+                    EditHotelBtn.Visibility = Visibility.Visible;
+                    EditHotelBtn.Visibility = Visibility.Visible;
+                    EditHotelBtn.Visibility = Visibility.Visible;
                     break;
                 case 1:
-                    EditHotelBtn.IsEnabled = false;
-                    EditTourBtn.IsEnabled = false;
-                    ViewTourBtn.IsEnabled = true;
+                    EditHotelBtn.Visibility = Visibility.Collapsed;
+                    EditTourBtn.Visibility = Visibility.Collapsed;
+                    ViewTourBtn.Visibility = Visibility.Visible;
+                    /*
+                       EditHotelBtn.IsEnabled = false;
+                       EditTourBtn.IsEnabled = false;
+                       ViewTourBtn.IsEnabled = true;
+                    */
                     break;
                 case 2:
+                    EditHotelBtn.Visibility = Visibility.Visible;
+                    EditTourBtn.Visibility = Visibility.Collapsed;
+                    ViewTourBtn.Visibility = Visibility.Visible;
+                    /*                  
                     EditHotelBtn.IsEnabled = true;
                     EditTourBtn.IsEnabled = false;
                     ViewTourBtn.IsEnabled = true;
+                    */
                     break;
                 default:
+                    EditHotelBtn.Visibility = Visibility.Visible;
+                    EditTourBtn.Visibility = Visibility.Collapsed;
+                    ViewTourBtn.Visibility = Visibility.Visible;
+                    /*
                     EditHotelBtn.IsEnabled = true;
                     EditTourBtn.IsEnabled = false;
                     ViewTourBtn.IsEnabled = true;
+                    */
                     break;
             }
         }

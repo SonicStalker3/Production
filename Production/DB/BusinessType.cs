@@ -7,29 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Supplier
+    public partial class BusinessType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Supplier()
+        public BusinessType()
         {
-            this.Materials = new HashSet<Material>();
+            this.Agents = new HashSet<Agent>();
         }
     
-        public int SupplierID { get; set; }
-        public string Name { get; set; }
-        public string INN { get; set; }
-        public Nullable<int> SupplierTypeID { get; set; }
-        public Nullable<int> Rating { get; set; }
-        public Nullable<System.DateTime> StartWorkingDate { get; set; }
-        public Nullable<int> SupplyHistoryID { get; set; }
-        public Nullable<int> MaterialsSuppliersID { get; set; }
+        public int BusinessTypeID { get; set; }
+        public string Tittle { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Material> Materials { get; set; }
+        public virtual ICollection<Agent> Agents { get; set; }
     }
 }

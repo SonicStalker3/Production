@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Production.DB;
+using Microsoft.Win32;
+using System.Data.Entity.Migrations;
 
 namespace Production.Pages.EditingPages
 {
@@ -20,90 +25,184 @@ namespace Production.Pages.EditingPages
     /// </summary>
     public partial class MaterialEditPage : Page
     {
-        public MaterialEditPage()
+        private Material _currentMaterial;
+        ProductionEntities _context = DBContext.GetContext();
+        private ObservableCollection<MaterialType> _materialTypes;
+        private ObservableCollection<MaterialUnitType> _materialUnitTypes;
+        private ObservableCollection<Supplier> _suppliers;
+        public MaterialEditPage(Material current_material = null)
         {
+            if (current_material != null)
+            {
+                _currentMaterial = current_material;
+            }
+            DataContext = _currentMaterial;
+            _materialTypes = new ObservableCollection<MaterialType>(DBContext.GetContext().MaterialTypes.ToList());
+            _suppliers = new ObservableCollection<Supplier>(DBContext.GetContext().Suppliers.ToList());
+            _materialUnitTypes = new ObservableCollection<MaterialUnitType>(DBContext.GetContext().MaterialUnitTypes.ToList());
             InitializeComponent();
+            MaterialTypeField.ItemsSource = _materialTypes;
+            MaterialUnitTypeField.ItemsSource = _materialUnitTypes;
+            //SuppliersField.ItemsSource = _suppliers;
         }
 
         private void ChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            /*if (string.IsNullOrWhiteSpace(TitleField.Text))
+            // Проверка на валидность данных
+            if (string.IsNullOrWhiteSpace(NameField.Text))
             {
-                MessageBox.Show("Название не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Наименование материала не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (StarsField.Value < 1 || StarsField.Value > 5)
+            if (!int.TryParse(PackageQuantityField.Text, out int packageQuantity) || packageQuantity < 0)
             {
-                MessageBox.Show("Рейтинг должен быть от 1 до 5.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Количество в упаковке должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (CountryList.SelectedItem == null || (CountryList.SelectedItem as Страны)?.CountryID == 0)
+            if (!int.TryParse(StockQuantityField.Text, out int stockQuantity) || stockQuantity < 0)
             {
-                MessageBox.Show("Пожалуйста, выберите страну.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Количество на складе должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (currentHotel == null)
+            if (!int.TryParse(MinQuantityField.Text, out int minQuantity) || minQuantity < 0)
             {
-                var selectedCountry = CountryList.SelectedItem as Страны;
+                MessageBox.Show("Минимальное допустимое количество должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-                if (selectedCountry == null)
-                {
-                    MessageBox.Show("Пожалуйста, выберите страну.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+            _currentMaterial.Name = NameField.Text;
+            _currentMaterial.MaterialType = MaterialUnitTypeField.SelectedItem as MaterialType;
+            _currentMaterial.PackageQuantity = packageQuantity;
+            _currentMaterial.StockQuantity = stockQuantity;
+            _currentMaterial.MinQuantity = minQuantity;
+            _currentMaterial.Description = DescriptionField.Text;
 
-                var newHotel = new Отель()
-                {
-                    Название = TitleField.Text,
-                    Рейтинг = StarsField.Value,
-                    Адрес = AddressField.Text.Trim(),
-                    Страны = selectedCountry
-                };
-
-                HotelEntities.GetContext().Отель.Add(newHotel);
-
-                try
-                {
-                    HotelEntities.GetContext().SaveChanges();
-                    MessageBox.Show($"Hotel{newHotel.HotelID} {newHotel.Название}");
-                    MessageBox.Show("Отель успешно добавлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                    NavigationService.GoBack();
-                }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при добавлении отеля: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+            //MessageBox.Show(_currentMaterial.MaterialID.ToString());
+            //_currentMaterial.Suppliers.Add(_context.Suppliers.FirstOrDefault());
+            if (_currentMaterial.MaterialID == 0)
+            {
+                _context.Materials.Add(_currentMaterial);
+                MessageBox.Show("Материал успешно добавлен!");
             }
             else
             {
-                try
+                _context.Materials.AddOrUpdate(_currentMaterial);
+                MessageBox.Show("Материал успешно отредактирован!");
+            }
+
+            try
+            {
+                _context.SaveChanges();
+                MessageBox.Show("Изменения сохранены!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                //NavigationService.GoBack();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при сохранении материала: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Image_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Image image)
+            {
+                if (image.DataContext is Material material)
                 {
-                    HotelEntities.GetContext().SaveChanges();
-                    MessageBox.Show("Изменения сохранены!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                    NavigationService.GoBack();
+                    if (material.Image == null || material.Image.Length == 0)
+                    {
+                        BitmapImage errorImage = BitmapToBitmapImage(Properties.Resources.ErrorImage);
+                        image.Source = errorImage;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при обновлении отеля: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }*/
+            }
+        }
+
+        private BitmapImage BitmapToBitmapImage(System.Drawing.Bitmap bitmap)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+                memoryStream.Position = 0;
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memoryStream;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze(); // Замораживаем объект для использования в других потоках
+                return bitmapImage;
+            }
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+
+        }
+        private void SuppliersButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new MaterialSuppliersEditPage((sender as Button).DataContext as Material));
+        }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Изменение картинки");
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif", // Фильтр для изображений
+                Title = "Выберите изображение"
+            };
+
+            // Открываем диалог и проверяем, выбрал ли пользователь файл
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // Получаем путь к выбранному изображению
+                string filePath = openFileDialog.FileName;
+
+                // Загружаем изображение и обновляем источник
+                BitmapImage bitmapImage = new BitmapImage(new Uri(filePath));
+                // Предполагается, что у вас есть элемент Image с именем, например, "MaterialImage"
+                _currentMaterial.Image = BitmapImageToByteArray(bitmapImage); // Обновите имя элемента Image на ваше
+            }
+        }
+        private byte[] BitmapImageToByteArray(BitmapImage bitmapImage)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                BitmapEncoder encoder = new PngBitmapEncoder(); // Вы можете использовать другой кодировщик, если нужно
+                encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                encoder.Save(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Отображаем диалоговое окно с подтверждением
+            var continueBox = MessageBox.Show("Вы уверены, что хотите удалить этот материал?",
+                                                "Подтверждение удаления",
+                                                MessageBoxButton.OKCancel,
+                                                MessageBoxImage.Warning);
+
+            // Проверяем, нажал ли пользователь "OK"
+            if (continueBox == MessageBoxResult.OK)
+            {
+                try
+                {
+                    // Удаляем материал из контекста
+                    _context.Materials.Remove(_currentMaterial);
+                    _context.SaveChanges();
+
+                    MessageBox.Show("Материал успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    NavigationService.GoBack(); // Возвращаемся на предыдущую страницу
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении материала: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

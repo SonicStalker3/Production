@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Production.DB;
 
 namespace Production.Pages.EditingPages
 {
@@ -21,7 +22,7 @@ namespace Production.Pages.EditingPages
     /// </summary>
     public partial class SupplierEditPage : Page
     {
-        public SupplierEditPage()
+        public SupplierEditPage(Supplier supplier)
         {
             InitializeComponent();
         }

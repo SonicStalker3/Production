@@ -7,23 +7,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class BusinessType
+    public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BusinessType()
+        public Role()
         {
-            this.Agents = new HashSet<Agent>();
+            this.Users = new HashSet<User>();
         }
     
-        public int BusinessTypeID { get; set; }
-        public string Tittle { get; set; }
+        public int RoleID { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> RolePersonalID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Agent> Agents { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

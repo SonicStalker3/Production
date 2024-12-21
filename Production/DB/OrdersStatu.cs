@@ -7,20 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class SalesHistory
+    public partial class OrdersStatu
     {
-        public int SalesHistoryID { get; set; }
-        public int AgentID { get; set; }
-        public int ProductID { get; set; }
-        public Nullable<System.DateTime> SaleDate { get; set; }
-        public Nullable<int> Quantity { get; set; }
-        public Nullable<decimal> TotalAmount { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public OrdersStatu()
+        {
+            this.Orders = new HashSet<Order>();
+        }
     
-        public virtual Agent Agent { get; set; }
+        public int OrdersStatusID { get; set; }
+        public string Tittle { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

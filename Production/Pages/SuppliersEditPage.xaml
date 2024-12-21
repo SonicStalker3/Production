@@ -9,10 +9,45 @@
       Title="SuppliersEditPage">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ItemsSource="{Binding Materials}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <WrapPanel HorizontalAlignment="Center" Grid.Row="0">
+            <Grid Margin="2">
+                <TextBox x:Name="SearchTextBox" Width="200" GotFocus="SearchTextBox_GotFocus" LostFocus="SearchTextBox_LostFocus"/>
+                <TextBlock Text="Введите для поиска" 
+            Foreground="Gray" 
+            VerticalAlignment="Center" 
+            Margin="5,0,0,0" 
+            IsHitTestVisible="False" 
+            x:Name="SearchPlaceholderText" 
+            Visibility="Visible"/>
+            </Grid>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Grid Visibility="Collapsed">
+                <ComboBox Width="200" GotFocus="SortComboBox_GotFocus"/>
+                <TextBlock Text="Cортировка" 
+            Foreground="Gray" 
+            VerticalAlignment="Center" 
+            Margin="5,0,0,0" 
+            IsHitTestVisible="False" 
+            x:Name="SortPlaceholderText" 
+            Visibility="Visible"/>
+            </Grid>
+            <Separator Width="20" Visibility="Hidden"/>
+            <Grid>
+                <ComboBox Width="200" GotFocus="FiltrationComboBox_GotFocus"/>
+                <TextBlock Text="Фильтрация" 
+            Foreground="Gray" 
+            VerticalAlignment="Center" 
+            Margin="5,0,0,0" 
+            IsHitTestVisible="False" 
+            x:Name="FiltrationPlaceholderText" 
+            Visibility="Visible"/>
+            </Grid>
+        </WrapPanel>
+        <ListView Grid.Row="1" ItemsSource="{Binding Suppliers}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel HorizontalAlignment="Center"/>
@@ -20,39 +55,38 @@
             </ListView.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Blue" BorderThickness="1" CornerRadius="5" Margin="5" Width="225" Height="400">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                                <!-- Для названия -->
-                                <RowDefinition Height="*"/>
-                                <!-- Для изображения -->
-                                <RowDefinition Height="Auto"/>
-                                <!-- Для описания -->
-                                <RowDefinition Height="Auto"/>
-                                <!-- Для цены -->
-                                <RowDefinition Height="Auto"/>
-                                <!-- Для актуальности -->
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                    <Border BorderBrush="Blue" BorderThickness="1" CornerRadius="5" Margin="5" Width="800" Height="255">
+                        <Grid Margin="5">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Image Grid.Row="1" Source="{Binding Image}" Loaded="Image_Loaded" Stretch="Fill" Height="200" VerticalAlignment="Top"/>
-                            <TextBlock TextWrapping="Wrap" Grid.Row="0" Text="{Binding Name}" FontWeight="Bold" FontSize="16" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                            <TextBlock Grid.Row="2" Text="{Binding Description}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
-                            <TextBlock Grid.Row="3" Text="{Binding Price, StringFormat='Цена: {0:N2} ₽'}" FontWeight="Bold" Margin="5" VerticalAlignment="Top"/>
-                            
+                            <Image Grid.Column="0" Source="{Binding Image}" Loaded="Image_Loaded" Stretch="Fill" Height="150" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Margin="0,30,0,0">
+                                <TextBlock TextWrapping="Wrap" FontWeight="Bold" FontSize="16" VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource MultiValueToStringConverter}">
+                                            <!--StringFormat='{}{0} | {1}'-->
+                                            <Binding Path="INN"/>
+                                            <Binding Path="Name"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Text="{Binding Rating, StringFormat='Рейтинг: {0}'}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
+                                <TextBlock Text="{Binding Materials, StringFormat='Материалы: {0}',Converter={StaticResource SuppliersToStringConverter}}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
+                                <TextBlock Text="{Binding Price, StringFormat='Цена: {0:N2} ₽'}" FontWeight="Bold" Margin="5" VerticalAlignment="Top"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Margin="30" Text="{Binding StockQuantity, StringFormat='Осталось: {0}'}"></TextBlock>
                             <!--<TextBlock Grid.Row="4" Text="{Binding Актуален, Converter={StaticResource BoolToYesNoConverter}}" Margin="5" VerticalAlignment="Top"/>-->
-                            <Button Content="Редактировать" Grid.Row="5"/>
+                            <!--<Button Content="Редактировать" Grid.Row="5"/>-->
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ListView>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <!-- Для кнопки "Добавить" -->

@@ -13,7 +13,6 @@ namespace Production
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            Debug.WriteLine($"{values.Length} {values[0] is string} {values[1] is string}");
             if (values.Length == 2 && values[0] is string name && values[1] is string title)
             {
                 return $"{name} | {title}"; // Объединяем значения с пробелом

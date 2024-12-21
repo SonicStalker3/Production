@@ -7,21 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class SalesHistory
     {
-        public int OrderID { get; set; }
+        public int SalesHistoryID { get; set; }
         public int AgentID { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
-        public int OrdersStatusID { get; set; }
-        public bool PrepaymentReceived { get; set; }
-        public Nullable<int> TotalAmount { get; set; }
+        public int ProductID { get; set; }
+        public Nullable<System.DateTime> SaleDate { get; set; }
+        public Nullable<int> Quantity { get; set; }
+        public Nullable<decimal> TotalAmount { get; set; }
     
         public virtual Agent Agent { get; set; }
-        public virtual OrdersStatu OrdersStatu { get; set; }
     }
 }

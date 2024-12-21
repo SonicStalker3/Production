@@ -11,10 +11,45 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ItemsSource="{Binding Materials}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <WrapPanel HorizontalAlignment="Center" Grid.Row="0">
+            <Grid Margin="2">
+                <TextBox x:Name="SearchTextBox" Width="200" GotFocus="SearchTextBox_GotFocus" LostFocus="SearchTextBox_LostFocus"/>
+                <TextBlock Text="Введите для поиска" 
+                    Foreground="Gray" 
+                    VerticalAlignment="Center" 
+                    Margin="5,0,0,0" 
+                    IsHitTestVisible="False" 
+                    x:Name="SearchPlaceholderText" 
+                    Visibility="Visible"/>
+            </Grid>
+            <Separator Width="10" Visibility="Hidden"/>
+            <Grid Visibility="Collapsed">
+                <ComboBox Width="200" GotFocus="SortComboBox_GotFocus" LostFocus="SortComboBox_LostFocus"/>
+                <TextBlock Text="Cортировка" 
+                    Foreground="Gray" 
+                    VerticalAlignment="Center" 
+                    Margin="5,0,0,0" 
+                    IsHitTestVisible="False" 
+                    x:Name="SortPlaceholderText" 
+                    Visibility="Visible"/>
+            </Grid>
+            <Separator Width="20" Visibility="Collapsed"/>
+            <Grid>
+                <ComboBox Width="200"  GotFocus="FiltrationComboBox_GotFocus" LostFocus="FiltrationComboBox_LostFocus"/>
+                <TextBlock Text="Фильтрация" 
+                    Foreground="Gray" 
+                    VerticalAlignment="Center" 
+                    Margin="5,0,0,0" 
+                    IsHitTestVisible="False" 
+                    x:Name="FiltrationPlaceholderText2" 
+                    Visibility="Visible"/>
+            </Grid>
+        </WrapPanel>
+        <ListView Grid.Row="1" ItemsSource="{Binding Materials}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="Material_Selected" SelectionChanged="Materials_Selected">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel HorizontalAlignment="Center"/>
@@ -23,28 +58,29 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Blue" BorderThickness="1" CornerRadius="5" Margin="5" Width="800" Height="255">
-                        <Grid>
+                        <Grid Margin="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Image Grid.Column="0" Source="{Binding Image}" Margin="5" Loaded="Image_Loaded" Stretch="Fill" Height="150" VerticalAlignment="Center"/>
-                            <StackPanel Grid.Column="1" Margin="0,30,0,0">
-                                <TextBlock TextWrapping="Wrap" FontWeight="Bold" FontSize="16" Margin="5" VerticalAlignment="Center">
+                            <Image Grid.Column="0" Source="{Binding Image}" Loaded="Image_Loaded" Stretch="Fill" Height="150" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Margin="5,30,0,0">
+                                <TextBlock TextWrapping="Wrap" FontWeight="Bold" FontSize="16" VerticalAlignment="Center">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource MultiValueToStringConverter}">
                                             <!--StringFormat='{}{0} | {1}'-->
-                                            <Binding Path="Name"/>
                                             <Binding Path="MaterialType.Tittle"/>
+                                            <Binding Path="Name"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Text="{Binding Suppliers, StringFormat='Поставщики: {0}',Converter={StaticResource SuppliersToStringConverter}}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
+                                <TextBlock Text="{Binding MinQuantity, StringFormat='Минимальное количество: {0}'}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
                                 <TextBlock Text="{Binding Suppliers, StringFormat='Поставщики: {0}',Converter={StaticResource SuppliersToStringConverter}}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
                                 <TextBlock Text="{Binding Price, StringFormat='Цена: {0:N2} ₽'}" FontWeight="Bold" Margin="5" VerticalAlignment="Top"/>
                             </StackPanel>
+                            <TextBlock Grid.Column="2" Margin="30" Text="{Binding StockQuantity, StringFormat='Осталось: {0}'}"></TextBlock>
                             <!--<TextBlock Grid.Row="4" Text="{Binding Актуален, Converter={StaticResource BoolToYesNoConverter}}" Margin="5" VerticalAlignment="Top"/>-->
                             <!--<Button Content="Редактировать" Grid.Row="5"/>-->
                         </Grid>
@@ -52,7 +88,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ListView>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <!-- Для кнопки "Добавить" -->
@@ -63,15 +99,11 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Margin="10,5,0,5" HorizontalAlignment="Left" Click="AddButton_Click">
-                <TextBlock Margin="5">Добавить</TextBlock>
+                <TextBlock Margin="5">Добавить/Изменить</TextBlock>
             </Button>
             <Button Grid.Column="1" Margin="0,5,10,5" HorizontalAlignment="Right" Click="BackButton_Click">
                 <TextBlock Margin="5">Назад</TextBlock>
             </Button>
-            <Button Grid.Column="2" Margin="0,5,10,5" HorizontalAlignment="Right" Click="RemoveButton_Click">
-                <TextBlock Margin="5">Удалить</TextBlock>
-            </Button>
-
         </Grid>
     </Grid>
 </Page>

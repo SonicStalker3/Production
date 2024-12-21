@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Input;
 using Production.DB;
+using Production.Pages.EditingPages;
 
 namespace Production.Pages
 {
@@ -23,17 +21,56 @@ namespace Production.Pages
     public partial class SuppliersEditPage : Page
     {
 
-        private Supplier currentSuppliers;
+        ProductionEntities _context = DBContext.GetContext();
+        public ObservableCollection<Supplier> Suppliers { get; set; } = new ObservableCollection<Supplier>();
 
-        public SuppliersEditPage(Supplier suppliers = null)
+
+        public SuppliersEditPage()
         {
+            Task task = LoadSuppliersAsync();
+
             InitializeComponent();
-            this.DataContext = currentSuppliers;
-            if (suppliers != null)
+            this.DataContext = this;
+        }
+        private async Task LoadSuppliersAsync()
+        {
+            try
             {
-                currentSuppliers = suppliers;
+                int batchSize = 10;
+                int skip = 0;
+                bool moreSuppliers = true;
+
+                while (moreSuppliers)
+                {
+                    var loadedSuppliers = await _context.Suppliers
+                        .Include(m => m.Materials)
+                        .OrderBy(m => m.SupplierID)
+                        .Skip(skip)
+                        .Take(batchSize)
+                        .ToListAsync();
+
+                    if (loadedSuppliers.Count > 0)
+                    {
+                        foreach (var supplier in loadedSuppliers)
+                        {
+                            Suppliers.Add(supplier);
+                        }
+
+                        skip += batchSize;
+                    }
+                    else
+                    {
+                        moreSuppliers = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Логирование или обработка исключения
+                Debug.WriteLine($"Ошибка при загрузке материалов: {ex.Message}");
             }
         }
+
         private void Image_Loaded(object sender, RoutedEventArgs e)
         {
             if (sender is System.Windows.Controls.Image image &&
@@ -86,5 +123,38 @@ namespace Production.Pages
         {
             NavigationService.GoBack();
         }
+        private void Supplier_Selected(object sender, MouseButtonEventArgs e)
+        {
+            if ((sender as ListView).SelectedItem is Supplier selectedSupplier)
+            {
+                NavigationService.Navigate(new SupplierEditPage(selectedSupplier));
+            }
+        }
+
+        private void Suppliers_Selected(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void SearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortComboBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FiltrationComboBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        
     }
 }

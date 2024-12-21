@@ -7,16 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class AccessLog
+    public partial class Order
     {
-        public int AccessLogID { get; set; }
-        public Nullable<int> EmployeeID { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public string Location { get; set; }
+        public int OrderID { get; set; }
+        public int AgentID { get; set; }
+        public Nullable<System.DateTime> OrderDate { get; set; }
+        public int OrdersStatusID { get; set; }
+        public bool PrepaymentReceived { get; set; }
+        public Nullable<int> TotalAmount { get; set; }
+    
+        public virtual Agent Agent { get; set; }
+        public virtual OrdersStatu OrdersStatu { get; set; }
     }
 }

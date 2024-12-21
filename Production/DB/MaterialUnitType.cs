@@ -7,27 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Production
+namespace Production.DB
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class MaterialUnitType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public MaterialUnitType()
         {
-            this.Agents = new HashSet<Agent>();
+            this.Materials = new HashSet<Material>();
         }
     
-        public int UserID { get; set; }
-        public string UserName { get; set; }
-        public string PasswordHash { get; set; }
-        public int RoleID { get; set; }
-        public string Email { get; set; }
+        public int MaterialUnitTypeID { get; set; }
+        public string Tittle { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Agent> Agents { get; set; }
-        public virtual Role Role { get; set; }
+        public virtual ICollection<Material> Materials { get; set; }
     }
 }

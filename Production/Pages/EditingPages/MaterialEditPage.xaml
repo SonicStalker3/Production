@@ -37,7 +37,7 @@
                     <Label Grid.Column="0">
                         <TextBlock TextWrapping="Wrap">Тип материала:</TextBlock>
                     </Label>
-                    <TextBox x:Name="MaterialTypeField" Grid.Column="1" MinWidth="200" Text="{Binding MaterialType, Mode=TwoWay}"/>
+                    <ComboBox Background="Transparent" x:Name="MaterialTypeField" Grid.Column="1" MinWidth="200" SelectedItem="{Binding MaterialType}" DisplayMemberPath="Tittle"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
@@ -50,7 +50,7 @@
                     <Label Grid.Column="0">
                         <TextBlock TextWrapping="Wrap">Поставщики:</TextBlock>
                     </Label>
-                    <TextBox x:Name="SuppliersField" Grid.Column="1" MinWidth="200" Text="{Binding Suppliers, Mode=TwoWay}"/>
+                    <Button Grid.Column="1" Content="Редактировать" Click="SuppliersButton_Click" />
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
@@ -76,7 +76,7 @@
                     <Label Grid.Column="0">
                         <TextBlock TextWrapping="Wrap">Единица измерения:</TextBlock>
                     </Label>
-                    <TextBox x:Name="UnitField" Grid.Column="1" MinWidth="200" Text="{Binding Unit, Mode=TwoWay}"/>
+                    <ComboBox Background="Transparent" x:Name="MaterialUnitTypeField" Grid.Column="1" MinWidth="200" SelectedItem="{Binding MaterialUnitType}" DisplayMemberPath="Tittle"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
@@ -128,7 +128,7 @@
                     <Label Grid.Column="0">
                         <TextBlock TextWrapping="Wrap">Изображение:</TextBlock>
                     </Label>
-                    <TextBox x:Name="ImageField" Grid.Column="1" MinWidth="200" Text="{Binding Image, Mode=TwoWay}"/>
+                    <Image Grid.Column="1" Source="{Binding Image}" MouseDown="Image_MouseDown" Loaded="Image_Loaded" Stretch="Fill" Width="200" Height="150" VerticalAlignment="Center"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
@@ -153,6 +153,10 @@
             </Button>
             <Button Click="ChangeButton_Click" Margin="5">
                 <TextBlock Margin="5">Добавить</TextBlock>
+            </Button>
+
+            <Button Margin="5" Click="DeleteButton_Click">
+                <TextBlock Margin="5">Удалить</TextBlock>
             </Button>
         </StackPanel>
     </Grid>
