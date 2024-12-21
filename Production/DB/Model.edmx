@@ -37,7 +37,7 @@
             <PropertyRef Name="BusinessTypeID" />
           </Key>
           <Property Name="BusinessTypeID" Type="int" Nullable="false" />
-          <Property Name="Tittle" Type="nvarchar(max)" />
+          <Property Name="Title" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Employees">
           <Key>
@@ -58,16 +58,16 @@
             <PropertyRef Name="MaterialID" />
           </Key>
           <Property Name="MaterialID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="25" />
+          <Property Name="Name" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="MaterialTypeID" Type="int" Nullable="false" />
           <Property Name="SuppliersID" Type="int" />
-          <Property Name="PackageQuantity" Type="int" />
-          <Property Name="MaterialUnitTypeID" Type="int" Nullable="false" />
-          <Property Name="StockQuantity" Type="int" />
-          <Property Name="MinQuantity" Type="int" />
+          <Property Name="PackageQuantity" Type="int" Nullable="false" />
+          <Property Name="MaterialUnitTypeID" Type="int" />
+          <Property Name="StockQuantity" Type="int" Nullable="false" />
+          <Property Name="MinQuantity" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Image" Type="varbinary(max)" />
-          <Property Name="Price" Type="int" />
+          <Property Name="Price" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="MaterialsSuppliers">
           <Key>
@@ -107,7 +107,7 @@
             <PropertyRef Name="OrdersStatusID" />
           </Key>
           <Property Name="OrdersStatusID" Type="int" Nullable="false" />
-          <Property Name="Tittle" Type="nvarchar(max)" />
+          <Property Name="Title" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -240,7 +240,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Material_MaterialUnitType">
-          <End Role="MaterialUnitType" Type="Self.MaterialUnitType" Multiplicity="1" />
+          <End Role="MaterialUnitType" Type="Self.MaterialUnitType" Multiplicity="0..1" />
           <End Role="Materials" Type="Self.Materials" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MaterialUnitType">
@@ -308,6 +308,18 @@
             </Principal>
             <Dependent Role="SalesHistory">
               <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Suppliers_BusinessTypes">
+          <End Role="BusinessTypes" Type="Self.BusinessTypes" Multiplicity="0..1" />
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessTypes">
+              <PropertyRef Name="BusinessTypeID" />
+            </Principal>
+            <Dependent Role="Suppliers">
+              <PropertyRef Name="SupplierTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -390,6 +402,10 @@
             <End Role="Agents" EntitySet="Agents" />
             <End Role="SalesHistory" EntitySet="SalesHistory" />
           </AssociationSet>
+          <AssociationSet Name="FK_Suppliers_BusinessTypes" Association="Self.FK_Suppliers_BusinessTypes">
+            <End Role="BusinessTypes" EntitySet="BusinessTypes" />
+            <End Role="Suppliers" EntitySet="Suppliers" />
+          </AssociationSet>
           <AssociationSet Name="FK_SupplyHistory_Material" Association="Self.FK_SupplyHistory_Material">
             <End Role="Materials" EntitySet="Materials" />
             <End Role="SupplyHistory" EntitySet="SupplyHistory" />
@@ -440,8 +456,9 @@
             <PropertyRef Name="BusinessTypeID" />
           </Key>
           <Property Name="BusinessTypeID" Type="Int32" Nullable="false" />
-          <Property Name="Tittle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Agents" Relationship="Self.FK_Agents_BusinessTypes" FromRole="BusinessTypes" ToRole="Agents" />
+          <NavigationProperty Name="Suppliers" Relationship="Self.FK_Suppliers_BusinessTypes" FromRole="BusinessTypes" ToRole="Suppliers" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -462,16 +479,16 @@
             <PropertyRef Name="MaterialID" />
           </Key>
           <Property Name="MaterialID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MaterialTypeID" Type="Int32" Nullable="false" />
           <Property Name="SuppliersID" Type="Int32" />
-          <Property Name="PackageQuantity" Type="Int32" />
-          <Property Name="MaterialUnitTypeID" Type="Int32" Nullable="false" />
-          <Property Name="StockQuantity" Type="Int32" />
-          <Property Name="MinQuantity" Type="Int32" />
+          <Property Name="PackageQuantity" Type="Int32" Nullable="false" />
+          <Property Name="MaterialUnitTypeID" Type="Int32" />
+          <Property Name="StockQuantity" Type="Int32" Nullable="false" />
+          <Property Name="MinQuantity" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Price" Type="Int32" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
           <NavigationProperty Name="MaterialType" Relationship="Self.FK_Material_MaterialType" FromRole="Materials" ToRole="MaterialType" />
           <NavigationProperty Name="MaterialUnitType" Relationship="Self.FK_Material_MaterialUnitType" FromRole="Materials" ToRole="MaterialUnitType" />
           <NavigationProperty Name="SupplyHistories" Relationship="Self.FK_SupplyHistory_Material" FromRole="Materials" ToRole="SupplyHistory" />
@@ -511,7 +528,7 @@
             <PropertyRef Name="OrdersStatusID" />
           </Key>
           <Property Name="OrdersStatusID" Type="Int32" Nullable="false" />
-          <Property Name="Tittle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_OrdersStatus" FromRole="OrdersStatus" ToRole="Orders" />
         </EntityType>
         <EntityType Name="Product">
@@ -568,6 +585,7 @@
           <Property Name="StartWorkingDate" Type="DateTime" Precision="0" />
           <Property Name="SupplyHistoryID" Type="Int32" />
           <Property Name="MaterialsSuppliersID" Type="Int32" />
+          <NavigationProperty Name="BusinessType" Relationship="Self.FK_Suppliers_BusinessTypes" FromRole="Suppliers" ToRole="BusinessTypes" />
           <NavigationProperty Name="Materials" Relationship="Self.MaterialsSuppliers" FromRole="Suppliers" ToRole="Materials" />
         </EntityType>
         <EntityType Name="SupplyHistory">
@@ -662,6 +680,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Suppliers_BusinessTypes">
+          <End Role="BusinessTypes" Type="Self.BusinessType" Multiplicity="0..1" />
+          <End Role="Suppliers" Type="Self.Supplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessTypes">
+              <PropertyRef Name="BusinessTypeID" />
+            </Principal>
+            <Dependent Role="Suppliers">
+              <PropertyRef Name="SupplierTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Material_MaterialType">
           <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
           <End Role="Materials" Type="Self.Material" Multiplicity="*" />
@@ -675,7 +705,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Material_MaterialUnitType">
-          <End Role="MaterialUnitType" Type="Self.MaterialUnitType" Multiplicity="1" />
+          <End Role="MaterialUnitType" Type="Self.MaterialUnitType" Multiplicity="0..1" />
           <End Role="Materials" Type="Self.Material" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MaterialUnitType">
@@ -760,6 +790,10 @@
             <End Role="Agents" EntitySet="Agents" />
             <End Role="SalesHistory" EntitySet="SalesHistories" />
           </AssociationSet>
+          <AssociationSet Name="FK_Suppliers_BusinessTypes" Association="Self.FK_Suppliers_BusinessTypes">
+            <End Role="BusinessTypes" EntitySet="BusinessTypes" />
+            <End Role="Suppliers" EntitySet="Suppliers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Material_MaterialType" Association="Self.FK_Material_MaterialType">
             <End Role="MaterialType" EntitySet="MaterialTypes" />
             <End Role="Materials" EntitySet="Materials" />
@@ -824,7 +858,7 @@
             <EntityTypeMapping TypeName="DB.BusinessType">
               <MappingFragment StoreEntitySet="BusinessTypes">
                 <ScalarProperty Name="BusinessTypeID" ColumnName="BusinessTypeID" />
-                <ScalarProperty Name="Tittle" ColumnName="Tittle" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -892,7 +926,7 @@
             <EntityTypeMapping TypeName="DB.OrdersStatu">
               <MappingFragment StoreEntitySet="OrdersStatus">
                 <ScalarProperty Name="OrdersStatusID" ColumnName="OrdersStatusID" />
-                <ScalarProperty Name="Tittle" ColumnName="Tittle" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

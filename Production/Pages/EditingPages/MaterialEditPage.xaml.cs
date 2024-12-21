@@ -36,6 +36,10 @@ namespace Production.Pages.EditingPages
             {
                 _currentMaterial = current_material;
             }
+            else 
+            {
+                _currentMaterial = new Material();
+            }
             DataContext = _currentMaterial;
             _materialTypes = new ObservableCollection<MaterialType>(DBContext.GetContext().MaterialTypes.ToList());
             _suppliers = new ObservableCollection<Supplier>(DBContext.GetContext().Suppliers.ToList());
@@ -48,56 +52,67 @@ namespace Production.Pages.EditingPages
 
         private void ChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            // Проверка на валидность данных
+            // Валидация наименования материала
             if (string.IsNullOrWhiteSpace(NameField.Text))
             {
                 MessageBox.Show("Наименование материала не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            // Валидация типа материала
+            if (MaterialTypeField.SelectedItem == null)
+            {
+                MessageBox.Show("Тип материала должен быть выбран.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Валидация количества в упаковке
             if (!int.TryParse(PackageQuantityField.Text, out int packageQuantity) || packageQuantity < 0)
             {
                 MessageBox.Show("Количество в упаковке должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            // Валидация единицы измерения
+            if (MaterialUnitTypeField.SelectedItem == null)
+            {
+                MessageBox.Show("Единица измерения должна быть выбрана.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Валидация количества на складе
             if (!int.TryParse(StockQuantityField.Text, out int stockQuantity) || stockQuantity < 0)
             {
                 MessageBox.Show("Количество на складе должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            // Валидация минимального допустимого количества
             if (!int.TryParse(MinQuantityField.Text, out int minQuantity) || minQuantity < 0)
             {
                 MessageBox.Show("Минимальное допустимое количество должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            _currentMaterial.Name = NameField.Text;
-            _currentMaterial.MaterialType = MaterialUnitTypeField.SelectedItem as MaterialType;
-            _currentMaterial.PackageQuantity = packageQuantity;
-            _currentMaterial.StockQuantity = stockQuantity;
-            _currentMaterial.MinQuantity = minQuantity;
-            _currentMaterial.Description = DescriptionField.Text;
-
-            //MessageBox.Show(_currentMaterial.MaterialID.ToString());
-            //_currentMaterial.Suppliers.Add(_context.Suppliers.FirstOrDefault());
-            if (_currentMaterial.MaterialID == 0)
+            // Валидация описания материала
+            if (string.IsNullOrWhiteSpace(DescriptionField.Text))
             {
-                _context.Materials.Add(_currentMaterial);
-                MessageBox.Show("Материал успешно добавлен!");
+                MessageBox.Show("Описание материала не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
-            else
+
+            // Валидация стоимости материала
+            if (!decimal.TryParse(PriceField.Text, out decimal price) || price < 0)
             {
-                _context.Materials.AddOrUpdate(_currentMaterial);
-                MessageBox.Show("Материал успешно отредактирован!");
+                MessageBox.Show("Стоимость материала должна быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
 
             try
             {
                 _context.SaveChanges();
                 MessageBox.Show("Изменения сохранены!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                //NavigationService.GoBack();
+                NavigationService.GoBack();
             }
             catch (Exception ex)
             {

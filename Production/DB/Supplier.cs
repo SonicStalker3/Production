@@ -29,6 +29,7 @@ namespace Production.DB
         public Nullable<int> SupplyHistoryID { get; set; }
         public Nullable<int> MaterialsSuppliersID { get; set; }
     
+        public virtual BusinessType BusinessType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Material> Materials { get; set; }
     }

@@ -18,12 +18,15 @@ namespace Production.DB
         public BusinessType()
         {
             this.Agents = new HashSet<Agent>();
+            this.Suppliers = new HashSet<Supplier>();
         }
     
         public int BusinessTypeID { get; set; }
-        public string Tittle { get; set; }
+        public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Agent> Agents { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Supplier> Suppliers { get; set; }
     }
 }

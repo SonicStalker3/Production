@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
@@ -22,89 +24,106 @@ namespace Production.Pages.EditingPages
     /// </summary>
     public partial class SupplierEditPage : Page
     {
+        private Supplier _currentSupplier;
+        ProductionEntities _context = DBContext.GetContext();
+        private ObservableCollection<BusinessType> _materialSupplierTypes;
+        private ObservableCollection<Supplier> _suppliers;
         public SupplierEditPage(Supplier supplier)
         {
-            InitializeComponent();
-        }
-        private void ChangeButton_Click(object sender, RoutedEventArgs e)
-        {
-            /*if (string.IsNullOrWhiteSpace(TitleField.Text))
+            if (supplier != null)
             {
-                MessageBox.Show("Название не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (StarsField.Value < 1 || StarsField.Value > 5)
-            {
-                MessageBox.Show("Рейтинг должен быть от 1 до 5.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (CountryList.SelectedItem == null || (CountryList.SelectedItem as Страны)?.CountryID == 0)
-            {
-                MessageBox.Show("Пожалуйста, выберите страну.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (currentHotel == null)
-            {
-                var selectedCountry = CountryList.SelectedItem as Страны;
-
-                if (selectedCountry == null)
-                {
-                    MessageBox.Show("Пожалуйста, выберите страну.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                var newHotel = new Отель()
-                {
-                    Название = TitleField.Text,
-                    Рейтинг = StarsField.Value,
-                    Адрес = AddressField.Text.Trim(),
-                    Страны = selectedCountry
-                };
-
-                HotelEntities.GetContext().Отель.Add(newHotel);
-
-                try
-                {
-                    HotelEntities.GetContext().SaveChanges();
-                    MessageBox.Show($"Hotel{newHotel.HotelID} {newHotel.Название}");
-                    MessageBox.Show("Отель успешно добавлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                    NavigationService.GoBack();
-                }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при добавлении отеля: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                _currentSupplier = supplier;
             }
             else
             {
-                try
-                {
-                    HotelEntities.GetContext().SaveChanges();
-                    MessageBox.Show("Изменения сохранены!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                    NavigationService.GoBack();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при обновлении отеля: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }*/
+                _currentSupplier = new Supplier();
+            }
+            InitializeComponent();
+            DataContext = _currentSupplier;
+            _materialSupplierTypes = new ObservableCollection<BusinessType>(_context.BusinessTypes.ToList());
+            SupplierTypeField.ItemsSource = _materialSupplierTypes;
+        }
+        private void ChangeButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Валидация наименования поставщика
+            if (string.IsNullOrWhiteSpace(SupplierNameField.Text))
+            {
+                MessageBox.Show("Наименование поставщика не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Валидация ИНН
+            if (string.IsNullOrWhiteSpace(INNField.Text))
+            {
+                MessageBox.Show("ИНН не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Валидация типа поставщика
+            if (SupplierTypeField.SelectedItem == null)
+            {
+                MessageBox.Show("Тип поставщика должен быть выбран.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(RaitingField.Text, out int raiting) || raiting < 0 || raiting > 100)
+            {
+                MessageBox.Show("Допустимый рейтинг должнен быть положительным числом в диапазоне от 0 до 100.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Обновление или добавление материала
+            if (_currentSupplier.SupplierID == 0)
+            {
+                _context.Suppliers.Add(_currentSupplier);
+                MessageBox.Show("Материал успешно добавлен!");
+            }
+            else
+            {
+                _context.Suppliers.AddOrUpdate(_currentSupplier);
+                MessageBox.Show("Материал успешно отредактирован!");
+            }
+
+            try
+            {
+                _context.SaveChanges();
+                MessageBox.Show("Изменения сохранены!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                NavigationService.GoBack();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при сохранении материала: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+        }
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Отображаем диалоговое окно с подтверждением
+            var continueBox = MessageBox.Show("Вы уверены, что хотите удалить этот материал?",
+                                                "Подтверждение удаления",
+                                                MessageBoxButton.OKCancel,
+                                                MessageBoxImage.Warning);
+
+            // Проверяем, нажал ли пользователь "OK"
+            if (continueBox == MessageBoxResult.OK)
+            {
+                try
+                {
+                    // Удаляем материал из контекста
+                    _context.Suppliers.Remove(_currentSupplier);
+                    _context.SaveChanges();
+
+                    MessageBox.Show("Материал успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    NavigationService.GoBack(); // Возвращаемся на предыдущую страницу
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении материала: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

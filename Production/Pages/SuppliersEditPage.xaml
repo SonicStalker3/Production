@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <WrapPanel HorizontalAlignment="Center" Grid.Row="0">
             <Grid Margin="2">
-                <TextBox x:Name="SearchTextBox" Width="200" GotFocus="SearchTextBox_GotFocus" LostFocus="SearchTextBox_LostFocus"/>
+                <TextBox x:Name="SearchTextBox" Width="200" TextChanged="SearchTextBox_TextChanged" GotFocus="SearchTextBox_GotFocus" LostFocus="SearchTextBox_LostFocus"/>
                 <TextBlock Text="Введите для поиска" 
             Foreground="Gray" 
             VerticalAlignment="Center" 
@@ -37,7 +37,7 @@
             </Grid>
             <Separator Width="20" Visibility="Hidden"/>
             <Grid>
-                <ComboBox Width="200" GotFocus="FiltrationComboBox_GotFocus"/>
+                <ComboBox Width="200" ItemsSource="{Binding BusinessTypes}" DisplayMemberPath="Tittle" SelectionChanged="FiltrationComboBox_SelectionChanged" GotFocus="FiltrationComboBox_GotFocus" LostFocus="FiltrationComboBox_LostFocus"/>
                 <TextBlock Text="Фильтрация" 
             Foreground="Gray" 
             VerticalAlignment="Center" 
@@ -47,7 +47,7 @@
             Visibility="Visible"/>
             </Grid>
         </WrapPanel>
-        <ListView Grid.Row="1" ItemsSource="{Binding Suppliers}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListView Grid.Row="1" ItemsSource="{Binding Suppliers}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="Supplier_Selected">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel HorizontalAlignment="Center"/>
@@ -89,11 +89,7 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <!-- Для кнопки "Добавить" -->
-                <ColumnDefinition Width="Auto"/>
-                <!-- Промежуток между кнопками -->
                 <ColumnDefinition Width="*"/>
-                <!-- Для кнопки "Удалить" -->
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Margin="10,5,0,5" HorizontalAlignment="Left" Click="AddButton_Click">
@@ -101,9 +97,6 @@
             </Button>
             <Button Grid.Column="1" Margin="0,5,10,5" HorizontalAlignment="Right" Click="BackButton_Click">
                 <TextBlock Margin="5">Назад</TextBlock>
-            </Button>
-            <Button Grid.Column="2" Margin="0,5,10,5" HorizontalAlignment="Right" Click="RemoveButton_Click">
-                <TextBlock Margin="5">Удалить</TextBlock>
             </Button>
 
         </Grid>

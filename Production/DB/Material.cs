@@ -25,13 +25,13 @@ namespace Production.DB
         public string Name { get; set; }
         public int MaterialTypeID { get; set; }
         public Nullable<int> SuppliersID { get; set; }
-        public Nullable<int> PackageQuantity { get; set; }
-        public int MaterialUnitTypeID { get; set; }
-        public Nullable<int> StockQuantity { get; set; }
-        public Nullable<int> MinQuantity { get; set; }
+        public int PackageQuantity { get; set; }
+        public Nullable<int> MaterialUnitTypeID { get; set; }
+        public int StockQuantity { get; set; }
+        public int MinQuantity { get; set; }
         public string Description { get; set; }
         public byte[] Image { get; set; }
-        public Nullable<int> Price { get; set; }
+        public int Price { get; set; }
     
         public virtual MaterialType MaterialType { get; set; }
         public virtual MaterialUnitType MaterialUnitType { get; set; }

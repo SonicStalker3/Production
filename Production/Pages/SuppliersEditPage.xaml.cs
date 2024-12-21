@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Input;
 using Production.DB;
 using Production.Pages.EditingPages;
+using System.Windows.Media.Media3D;
 
 namespace Production.Pages
 {
@@ -22,15 +23,30 @@ namespace Production.Pages
     {
 
         ProductionEntities _context = DBContext.GetContext();
+        private ObservableCollection<Supplier> _allSuppliers { get; set; } = new ObservableCollection<Supplier>();
         public ObservableCollection<Supplier> Suppliers { get; set; } = new ObservableCollection<Supplier>();
-
+        public ObservableCollection<BusinessType> BusinessTypes { get; set; } = new ObservableCollection<BusinessType>();
 
         public SuppliersEditPage()
         {
-            Task task = LoadSuppliersAsync();
-
-            InitializeComponent();
             this.DataContext = this;
+            var supplierTypes = DBContext.GetContext().BusinessTypes.ToList();
+            var allSupplierTypes = new BusinessType
+            {
+                Title = "Все",
+                BusinessTypeID = -1
+            };
+            supplierTypes.Insert(0, allSupplierTypes);
+
+            BusinessTypes = new ObservableCollection<BusinessType>(supplierTypes);
+
+            var suppliers = DBContext.GetContext().Suppliers.Include(m => m.BusinessType).OrderBy(x => x.Name).ToList();
+            _allSuppliers = new ObservableCollection<Supplier>(suppliers);
+
+            LoadSuppliersAsync();
+            InitializeComponent();
+            
+            
         }
         private async Task LoadSuppliersAsync()
         {
@@ -102,8 +118,7 @@ namespace Production.Pages
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-/*            var selectedHotel = DGridHotel.SelectedItem as Отель;
-            NavigationService.Navigate(new AddEditHotelsPage(null));*/
+            NavigationService.Navigate(new SupplierEditPage(null));
         }
 
         private void EditButtonClick(object sender, RoutedEventArgs e)
@@ -112,19 +127,12 @@ namespace Production.Pages
             NavigationService.Navigate(new AddEditHotelsPage(selectedHotel));*/
         }
 
-        private void RemoveButton_Click(object sender, RoutedEventArgs e)
-        {
-/*            var selectedHotel = DGridHotel.SelectedItem as Отель;
-            HotelEntities.GetContext().Отель.Remove(selectedHotel);
-            HotelEntities.GetContext().SaveChanges();*/
-        }
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
         }
         private void Supplier_Selected(object sender, MouseButtonEventArgs e)
-        {
+        { 
             if ((sender as ListView).SelectedItem is Supplier selectedSupplier)
             {
                 NavigationService.Navigate(new SupplierEditPage(selectedSupplier));
@@ -136,24 +144,69 @@ namespace Production.Pages
 
         }
 
-        private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        private void ApplyFilters()
         {
+            /*var searchText = SearchTextBox.Text.ToLower();
+            var filteredMaterials = _allMaterials.AsEnumerable();
 
-        }
-        private void SearchTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
+            filteredMaterials = filteredMaterials.Where(t => t.Name.ToLower().Contains(searchText));
 
+            if (FiltrationComboBox.SelectedItem is MaterialType selectedType)
+            {
+                if (selectedType.MaterialTypeID != -1)
+                {
+                    filteredMaterials = filteredMaterials.Where(t => t.MaterialType == selectedType);
+                }
+            }
+
+            Materials.Clear();
+            foreach (var tour in filteredMaterials.OrderBy(t => t.Name))
+            {
+                Materials.Add(tour);
+            }*/
         }
 
         private void SortComboBox_GotFocus(object sender, RoutedEventArgs e)
         {
 
         }
+        private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SearchPlaceholderText.Visibility = Visibility.Collapsed;
+        }
+
+        private void SearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                SearchPlaceholderText.Visibility = Visibility.Visible;
+            }
+        }
 
         private void FiltrationComboBox_GotFocus(object sender, RoutedEventArgs e)
         {
+            SortPlaceholderText.Visibility = Visibility.Collapsed;
+        }
+
+        private void FiltrationComboBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                SortPlaceholderText.Visibility = Visibility.Visible;
+            }
 
         }
+
+        private void FiltrationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
+       
 
         
     }

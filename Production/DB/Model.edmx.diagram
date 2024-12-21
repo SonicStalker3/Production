@@ -4,28 +4,29 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6f84ae7e927e4acda3a253933414f3be" Name="Diagram1">
-        <EntityTypeShape EntityType="DB.AccessLog" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.Agent" Width="1.5" PointX="12.25" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.BusinessType" Width="1.5" PointX="10" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.Employee" Width="1.5" PointX="2.75" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.Material" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.MaterialType" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.MaterialUnitType" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.Order" Width="1.5" PointX="14.5" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.OrdersStatu" Width="1.5" PointX="12.25" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.Product" Width="1.5" PointX="4.75" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.Role" Width="1.5" PointX="7.75" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.SalesHistory" Width="1.5" PointX="14.5" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.Supplier" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.SupplyHistory" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.sysdiagram" Width="1.5" PointX="7.75" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.TurnstileLog" Width="1.5" PointX="6.75" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB.User" Width="1.5" PointX="10" PointY="3.375" IsExpanded="true" />
+      <Diagram DiagramId="ab9bd013814c44e887f6040197629f47" Name="Diagram1" ZoomLevel="98">
+        <EntityTypeShape EntityType="DB.AccessLog" Width="1.5" PointX="7.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.Agent" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.BusinessType" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.Employee" Width="1.5" PointX="7.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.Material" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.MaterialType" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.MaterialUnitType" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.Order" Width="1.5" PointX="7.5" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.OrdersStatu" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.Product" Width="1.5" PointX="9.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.Role" Width="1.5" PointX="0.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.SalesHistory" Width="1.5" PointX="7.5" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.Supplier" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.SupplyHistory" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.sysdiagram" Width="1.5" PointX="7.75" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.TurnstileLog" Width="1.5" PointX="9.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB.User" Width="1.5" PointX="3" PointY="13.75" IsExpanded="true" />
         <AssociationConnector Association="DB.FK_Agents_BusinessTypes" ManuallyRouted="false" />
         <AssociationConnector Association="DB.FK_Agents_Users" ManuallyRouted="false" />
         <AssociationConnector Association="DB.FK_Orders_Agents" ManuallyRouted="false" />
         <AssociationConnector Association="DB.FK_SalesHistory_Agents" ManuallyRouted="false" />
+        <AssociationConnector Association="DB.FK_Suppliers_BusinessTypes" ManuallyRouted="false" />
         <AssociationConnector Association="DB.FK_Material_MaterialType" ManuallyRouted="false" />
         <AssociationConnector Association="DB.FK_Material_MaterialUnitType" ManuallyRouted="false" />
         <AssociationConnector Association="DB.FK_SupplyHistory_Material" ManuallyRouted="false" />

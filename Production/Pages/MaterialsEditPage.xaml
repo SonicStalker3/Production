@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <WrapPanel HorizontalAlignment="Center" Grid.Row="0">
             <Grid Margin="2">
-                <TextBox x:Name="SearchTextBox" Width="200" GotFocus="SearchTextBox_GotFocus" LostFocus="SearchTextBox_LostFocus"/>
+                <TextBox x:Name="SearchTextBox" Width="200" TextChanged="SearchTextBox_TextChanged" GotFocus="SearchTextBox_GotFocus" LostFocus="SearchTextBox_LostFocus"/>
                 <TextBlock Text="Введите для поиска" 
                     Foreground="Gray" 
                     VerticalAlignment="Center" 
@@ -39,7 +39,7 @@
             </Grid>
             <Separator Width="20" Visibility="Collapsed"/>
             <Grid>
-                <ComboBox Width="200"  GotFocus="FiltrationComboBox_GotFocus" LostFocus="FiltrationComboBox_LostFocus"/>
+                <ComboBox x:Name="FiltrationComboBox" Width="200" ItemsSource="{Binding MaterialTypes}" DisplayMemberPath="Tittle" SelectionChanged="FiltrationComboBox_SelectionChanged" GotFocus="FiltrationComboBox_GotFocus" LostFocus="FiltrationComboBox_LostFocus"/>
                 <TextBlock Text="Фильтрация" 
                     Foreground="Gray" 
                     VerticalAlignment="Center" 

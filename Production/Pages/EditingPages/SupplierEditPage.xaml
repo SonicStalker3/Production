@@ -15,8 +15,6 @@
 
         <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto">
             <StackPanel Margin="10">
-
-                <!-- Поле для наименования поставщика -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*"/>
@@ -25,7 +23,7 @@
                     <Label Grid.Column="0">
                         <TextBlock TextWrapping="Wrap">Наименование поставщика:</TextBlock>
                     </Label>
-                    <TextBox x:Name="SupplierNameField" Grid.Column="1" MinWidth="200" Text="{Binding SupplierName, Mode=TwoWay}"/>
+                    <TextBox x:Name="SupplierNameField" Grid.Column="1" MinWidth="200" Text="{Binding Name, Mode=TwoWay}"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
@@ -42,6 +40,18 @@
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">
+                        <TextBlock TextWrapping="Wrap">Рейтинг:</TextBlock>
+                    </Label>
+                    <TextBox x:Name="RaitingField" Grid.Column="1" MinWidth="200" Text="{Binding Rating, Mode=TwoWay}"/>
+                </Grid>
+                <Separator Visibility="Hidden" Height="20"/>
+
                 <!-- Поле для типа поставщика -->
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -51,16 +61,13 @@
                     <Label Grid.Column="0">
                         <TextBlock TextWrapping="Wrap">Тип поставщика:</TextBlock>
                     </Label>
-                    <ComboBox x:Name="SupplierTypeField" Grid.Column="1" MinWidth="200" SelectedItem="{Binding SupplierType}">
-                        <ComboBoxItem Content="ООО"/>
-                        <ComboBoxItem Content="ИП"/>
-                        <ComboBoxItem Content="Самозанятый"/>
-                        <ComboBoxItem Content="ОА"/>
+                    <ComboBox x:Name="SupplierTypeField" Grid.Column="1" MinWidth="200" SelectedItem="{Binding BusinessType, Mode=TwoWay}" DisplayMemberPath="Title">
                     </ComboBox>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
                 <!-- Поле для истории поставок -->
+                <!--
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.25*"/>
@@ -71,6 +78,7 @@
                     </Label>
                     <TextBox x:Name="SupplyHistoryField" Grid.Column="1" MinWidth="200" Text="{Binding SupplyHistory, Mode=TwoWay}" AcceptsReturn="True" Height="100"/>
                 </Grid>
+                -->
                 <Separator Visibility="Hidden" Height="20"/>
             </StackPanel>
         </ScrollViewer>
@@ -81,6 +89,9 @@
             </Button>
             <Button Click="ChangeButton_Click" Margin="5">
                 <TextBlock Margin="5">Добавить</TextBlock>
+            </Button>
+            <Button Click="DeleteButton_Click" Margin="5">
+                <TextBlock Margin="5">Удалить</TextBlock>
             </Button>
         </StackPanel>
     </Grid>
