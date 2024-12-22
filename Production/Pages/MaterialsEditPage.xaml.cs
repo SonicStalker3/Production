@@ -149,7 +149,12 @@ namespace Production.Pages
             var searchText = SearchTextBox.Text.ToLower();
             var filteredMaterials = _allMaterials.AsEnumerable();
 
-            filteredMaterials = filteredMaterials.Where(t => t.Name.ToLower().Contains(searchText));
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                filteredMaterials = filteredMaterials.Where(t =>
+                    t.MaterialType.Tittle.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    t.Name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
 
             if (FiltrationComboBox.SelectedItem is MaterialType selectedType)
             {

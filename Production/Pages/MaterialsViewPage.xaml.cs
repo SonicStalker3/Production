@@ -21,13 +21,13 @@ using Production.DB;
 namespace Production.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для MaterialViewPage.xaml
+    /// Логика взаимодействия для MaterialsViewPage.xaml
     /// </summary>
-    public partial class MaterialViewPage : Page
+    public partial class MaterialsViewPage : Page
     {
         ProductionEntities _context = DBContext.GetContext();
         public ObservableCollection<Material> Materials { get; set; } = new ObservableCollection<Material>();
-        public MaterialViewPage()
+        public MaterialsViewPage()
         {
             this.DataContext = this;
             Task task = LoadMaterialsAsync();
