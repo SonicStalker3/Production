@@ -62,8 +62,6 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-
-                            <Image Grid.Column="0" Source="{Binding Image}" Loaded="Image_Loaded" Stretch="Fill" Height="150" VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="1" Margin="0,30,0,0">
                                 <TextBlock TextWrapping="Wrap" FontWeight="Bold" FontSize="16" VerticalAlignment="Center">
                                     <TextBlock.Text>
@@ -74,13 +72,9 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Text="{Binding Rating, StringFormat='Рейтинг: {0}'}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
-                                <TextBlock Text="{Binding Materials, StringFormat='Материалы: {0}',Converter={StaticResource SuppliersToStringConverter}}" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
-                                <TextBlock Text="{Binding Price, StringFormat='Цена: {0:N2} ₽'}" FontWeight="Bold" Margin="5" VerticalAlignment="Top"/>
+                                <TextBlock Text="{Binding Rating, StringFormat='Рейтинг: {0}'}" TextWrapping="Wrap" Margin="2" VerticalAlignment="Top"/>
+                                <TextBlock Text="{Binding BusinessType.Title, StringFormat='Тип поставщика: {0}'}" TextWrapping="Wrap" Margin="2" VerticalAlignment="Top"/>
                             </StackPanel>
-                            <TextBlock Grid.Column="2" Margin="30" Text="{Binding StockQuantity, StringFormat='Осталось: {0}'}"></TextBlock>
-                            <!--<TextBlock Grid.Row="4" Text="{Binding Актуален, Converter={StaticResource BoolToYesNoConverter}}" Margin="5" VerticalAlignment="Top"/>-->
-                            <!--<Button Content="Редактировать" Grid.Row="5"/>-->
                         </Grid>
                     </Border>
                 </DataTemplate>

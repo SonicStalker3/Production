@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Production.Pages.EditingPages"
+      xmlns:controls="clr-namespace:Production.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MaterialEditPage">
@@ -50,7 +51,7 @@
                     <Label Grid.Column="0">
                         <TextBlock TextWrapping="Wrap">Поставщики:</TextBlock>
                     </Label>
-                    <Button Grid.Column="1" Content="Редактировать" Click="SuppliersButton_Click" />
+                    <controls:CommaSeparatedTextBox x:Name="SupplierField" Grid.Column="1" DisplayableMemberPath="Name"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 
@@ -128,7 +129,7 @@
                     <Label Grid.Column="0">
                         <TextBlock TextWrapping="Wrap">Изображение:</TextBlock>
                     </Label>
-                    <Image Grid.Column="1" Source="{Binding Image}" MouseDown="Image_MouseDown" Loaded="Image_Loaded" Stretch="Fill" Width="200" Height="150" VerticalAlignment="Center"/>
+                    <Image x:Name="MatImage" Grid.Column="1" Source="{Binding Image}" MouseDown="Image_MouseDown" Loaded="Image_Loaded" Stretch="Fill" Width="200" Height="150" VerticalAlignment="Center"/>
                 </Grid>
                 <Separator Visibility="Hidden" Height="20"/>
 

@@ -28,7 +28,7 @@
                 <TextBlock HorizontalAlignment="Center" Text="{Binding PageTitle}"/>
             </StackPanel>
         </Grid>
-        <Frame x:Name="MainFrame" Grid.Row="1" Source="Pages/LoginPage.xaml"/>
+        <Frame x:Name="MainFrame" Grid.Row="1" Source="Pages/LoginPage.xaml" NavigationUIVisibility="Hidden"/>
         <Grid Grid.Row="2" Background="#FFC1C1"></Grid>
     </Grid>
 </Window>

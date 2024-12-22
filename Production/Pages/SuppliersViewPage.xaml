@@ -63,8 +63,6 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-
-                            <Image Grid.Column="0" Source="{Binding Image}" Loaded="Image_Loaded" Stretch="Fill" Height="150" VerticalAlignment="Center"/>
                             <StackPanel Grid.Column="1" Margin="0,30,0,0">
                                 <TextBlock TextWrapping="Wrap" FontWeight="Bold" FontSize="16" VerticalAlignment="Center">
                                     <TextBlock.Text>

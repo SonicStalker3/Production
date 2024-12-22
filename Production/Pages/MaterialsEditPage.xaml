@@ -91,11 +91,7 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <!-- Для кнопки "Добавить" -->
-                <ColumnDefinition Width="Auto"/>
-                <!-- Промежуток между кнопками -->
                 <ColumnDefinition Width="*"/>
-                <!-- Для кнопки "Удалить" -->
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Margin="10,5,0,5" HorizontalAlignment="Left" Click="AddButton_Click">

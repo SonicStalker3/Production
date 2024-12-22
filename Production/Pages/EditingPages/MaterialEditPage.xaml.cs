@@ -45,67 +45,67 @@ namespace Production.Pages.EditingPages
             _suppliers = new ObservableCollection<Supplier>(DBContext.GetContext().Suppliers.ToList());
             _materialUnitTypes = new ObservableCollection<MaterialUnitType>(DBContext.GetContext().MaterialUnitTypes.ToList());
             InitializeComponent();
+            if (current_material != null)
+            {
+                var supplierNames = _currentMaterial.Suppliers.Select(s => s.Name).ToList();
+
+                if (supplierNames.Any()) // Проверяем, есть ли хотя бы один поставщик
+                {
+                    SupplierField.Text = string.Join(", ", supplierNames);
+                }
+                else
+                {
+                    SupplierField.Text = string.Empty;
+                }
+            }
             MaterialTypeField.ItemsSource = _materialTypes;
             MaterialUnitTypeField.ItemsSource = _materialUnitTypes;
+            SupplierField.Suggestions = _suppliers;
             //SuppliersField.ItemsSource = _suppliers;
         }
 
         private void ChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            // Валидация наименования материала
-            if (string.IsNullOrWhiteSpace(NameField.Text))
+            if (!ValidateFields())
             {
-                MessageBox.Show("Наименование материала не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            var supplierNames = SupplierField.Text.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                           .Select(name => name.Trim())
+                                           .ToList();
 
-            // Валидация типа материала
-            if (MaterialTypeField.SelectedItem == null)
+            _currentMaterial.Suppliers.Clear();
+
+            foreach (var name in supplierNames)
             {
-                MessageBox.Show("Тип материала должен быть выбран.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    continue;
+                }
+
+                var existingSupplier = _suppliers.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+                if (existingSupplier != null)
+                {
+                    _currentMaterial.Suppliers.Add(existingSupplier);
+                }
+                else
+                {
+                    var newSupplier = new Supplier { Name = name };
+                    _currentMaterial.Suppliers.Add(newSupplier);
+                }
             }
 
-            // Валидация количества в упаковке
-            if (!int.TryParse(PackageQuantityField.Text, out int packageQuantity) || packageQuantity < 0)
+            // Обновление или добавление материала
+            if (_currentMaterial.MaterialID == 0)
             {
-                MessageBox.Show("Количество в упаковке должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                _context.Materials.Add(_currentMaterial);
+                MessageBox.Show("Материал успешно добавлен!");
             }
-
-            // Валидация единицы измерения
-            if (MaterialUnitTypeField.SelectedItem == null)
+            else
             {
-                MessageBox.Show("Единица измерения должна быть выбрана.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Валидация количества на складе
-            if (!int.TryParse(StockQuantityField.Text, out int stockQuantity) || stockQuantity < 0)
-            {
-                MessageBox.Show("Количество на складе должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Валидация минимального допустимого количества
-            if (!int.TryParse(MinQuantityField.Text, out int minQuantity) || minQuantity < 0)
-            {
-                MessageBox.Show("Минимальное допустимое количество должно быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Валидация описания материала
-            if (string.IsNullOrWhiteSpace(DescriptionField.Text))
-            {
-                MessageBox.Show("Описание материала не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Валидация стоимости материала
-            if (!decimal.TryParse(PriceField.Text, out decimal price) || price < 0)
-            {
-                MessageBox.Show("Стоимость материала должна быть положительным числом.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                _context.Materials.AddOrUpdate(_currentMaterial);
+                MessageBox.Show("Материал успешно отредактирован!");
             }
 
             try
@@ -118,6 +118,63 @@ namespace Production.Pages.EditingPages
             {
                 MessageBox.Show($"Ошибка при сохранении материала: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private bool ValidateFields()
+        {
+            if (string.IsNullOrWhiteSpace(NameField.Text))
+            {
+                ShowWarning("Наименование материала не может быть пустым.");
+                return false;
+            }
+
+            if (MaterialTypeField.SelectedItem == null)
+            {
+                ShowWarning("Тип материала должен быть выбран.");
+                return false;
+            }
+
+            if (!int.TryParse(PackageQuantityField.Text, out int packageQuantity) || packageQuantity < 0)
+            {
+                ShowWarning("Количество в упаковке должно быть положительным числом.");
+                return false;
+            }
+
+            if (MaterialUnitTypeField.SelectedItem == null)
+            {
+                ShowWarning("Единица измерения должна быть выбрана.");
+                return false;
+            }
+
+            if (!int.TryParse(StockQuantityField.Text, out int stockQuantity) || stockQuantity < 0)
+            {
+                ShowWarning("Количество на складе должно быть положительным числом.");
+                return false;
+            }
+
+            if (!int.TryParse(MinQuantityField.Text, out int minQuantity) || minQuantity < 0)
+            {
+                ShowWarning("Минимальное допустимое количество должно быть положительным числом.");
+                return false;
+            }
+/*
+            if (string.IsNullOrWhiteSpace(DescriptionField.Text))
+            {
+                ShowWarning("Описание материала не может быть пустым.");
+                return false;
+            }*/
+
+            if (!decimal.TryParse(PriceField.Text, out decimal price) || price < 0)
+            {
+                ShowWarning("Стоимость материала должна быть положительным числом.");
+                return false;
+            }
+
+            return true; // Все проверки пройдены
+        }
+        private void ShowWarning(string message)
+        {
+            MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void Image_Loaded(object sender, RoutedEventArgs e)
@@ -156,10 +213,6 @@ namespace Production.Pages.EditingPages
             NavigationService.GoBack();
 
         }
-        private void SuppliersButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new MaterialSuppliersEditPage((sender as Button).DataContext as Material));
-        }
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -178,8 +231,12 @@ namespace Production.Pages.EditingPages
 
                 // Загружаем изображение и обновляем источник
                 BitmapImage bitmapImage = new BitmapImage(new Uri(filePath));
+                if (bitmapImage != null) 
+                {
+                    MatImage.Source = bitmapImage;
+                }
                 // Предполагается, что у вас есть элемент Image с именем, например, "MaterialImage"
-                _currentMaterial.Image = BitmapImageToByteArray(bitmapImage); // Обновите имя элемента Image на ваше
+                _currentMaterial.Image = BitmapImageToByteArray(bitmapImage);
             }
         }
         private byte[] BitmapImageToByteArray(BitmapImage bitmapImage)

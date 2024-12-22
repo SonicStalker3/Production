@@ -97,13 +97,16 @@ namespace Production.Pages
 
         private void Image_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender is System.Windows.Controls.Image image &&
-                (image.Source == null ||
-                string.IsNullOrWhiteSpace((image.Source as BitmapImage).UriSource?.ToString()
-                )))
+            if (sender is System.Windows.Controls.Image image)
             {
-                BitmapImage errorImage = BitmapToBitmapImage(Properties.Resources.ErrorImage);
-                image.Source = errorImage;
+                if (image.DataContext is Material material)
+                {
+                    if (material.Image == null || material.Image.Length == 0)
+                    {
+                        BitmapImage errorImage = BitmapToBitmapImage(Properties.Resources.ErrorImage);
+                        image.Source = errorImage;
+                    }
+                }
             }
         }
 

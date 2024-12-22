@@ -151,10 +151,10 @@ namespace Production.Pages
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                
+
                 filteredSuppliers = filteredSuppliers.Where(t =>
-                    t.INN.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    t.Name.Replace('c', 'с').Replace('C', 'С').IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
+                        (t.INN != null && t.INN.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                        (t.Name != null && t.Name.Replace('c', 'с').Replace('C', 'С').IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0));
             }
 
             if (FiltrationComboBox.SelectedItem is BusinessType selectedType)
