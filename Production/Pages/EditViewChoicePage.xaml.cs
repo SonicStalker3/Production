@@ -34,14 +34,16 @@ namespace Production.Pages
                     EditTourBtn.IsEnabled = true;
                     ViewTourBtn.IsEnabled = true;
                     */
-                    EditHotelBtn.Visibility = Visibility.Visible;
-                    EditHotelBtn.Visibility = Visibility.Visible;
-                    EditHotelBtn.Visibility = Visibility.Visible;
+                    EditMareialsBtn.Visibility = Visibility.Visible;
+                    EditSuppliersBtn.Visibility = Visibility.Visible;
+                    ViewMaterialsBtn.Visibility = Visibility.Visible;
+                    ViewSuppliersBtn.Visibility = Visibility.Visible;
                     break;
                 case 1:
-                    EditHotelBtn.Visibility = Visibility.Collapsed;
-                    EditTourBtn.Visibility = Visibility.Collapsed;
-                    ViewTourBtn.Visibility = Visibility.Visible;
+                    EditMareialsBtn.Visibility = Visibility.Collapsed;
+                    EditSuppliersBtn.Visibility = Visibility.Collapsed;
+                    ViewMaterialsBtn.Visibility = Visibility.Visible;
+                    ViewSuppliersBtn.Visibility = Visibility.Visible;
                     /*
                        EditHotelBtn.IsEnabled = false;
                        EditTourBtn.IsEnabled = false;
@@ -49,9 +51,10 @@ namespace Production.Pages
                     */
                     break;
                 case 2:
-                    EditHotelBtn.Visibility = Visibility.Visible;
-                    EditTourBtn.Visibility = Visibility.Collapsed;
-                    ViewTourBtn.Visibility = Visibility.Visible;
+                    EditMareialsBtn.Visibility = Visibility.Visible;
+                    EditSuppliersBtn.Visibility = Visibility.Collapsed;
+                    ViewMaterialsBtn.Visibility = Visibility.Visible;
+                    ViewSuppliersBtn.Visibility = Visibility.Visible;
                     /*                  
                     EditHotelBtn.IsEnabled = true;
                     EditTourBtn.IsEnabled = false;
@@ -59,9 +62,10 @@ namespace Production.Pages
                     */
                     break;
                 default:
-                    EditHotelBtn.Visibility = Visibility.Visible;
-                    EditTourBtn.Visibility = Visibility.Collapsed;
-                    ViewTourBtn.Visibility = Visibility.Visible;
+                    EditMareialsBtn.Visibility = Visibility.Visible;
+                    EditSuppliersBtn.Visibility = Visibility.Collapsed;
+                    ViewMaterialsBtn.Visibility = Visibility.Visible;
+                    ViewSuppliersBtn.Visibility = Visibility.Visible;
                     /*
                     EditHotelBtn.IsEnabled = true;
                     EditTourBtn.IsEnabled = false;
@@ -71,19 +75,23 @@ namespace Production.Pages
             }
         }
 
-        private void EditHotelBtn_Click(object sender, RoutedEventArgs e)
+        private void EditMaterialsBtn_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new MaterialsEditPage());
         }
 
-        private void EditTourBtn_Click(object sender, RoutedEventArgs e)
+        private void EditSuppliersBtn_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new SuppliersEditPage());
         }
 
-        private void ViewTourBtn_Click(object sender, RoutedEventArgs e)
+        private void ViewMaterialsBtn_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new MaterialViewPage());
+            NavigationService.Navigate(new MaterialsViewPage());
+        }
+        private void ViewSuppliersBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new SuppliersViewPage());
         }
         private void EditUsersBtn_Click(object sender, RoutedEventArgs e)
         {

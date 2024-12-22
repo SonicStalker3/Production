@@ -11,14 +11,17 @@
     <Grid>
         <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <WrapPanel Orientation="Horizontal">
-                <Button x:Name="EditHotelBtn" Margin="5" Height="50" Click="EditHotelBtn_Click">
+                <Button x:Name="EditMareialsBtn" Margin="5" Height="50" Click="EditMaterialsBtn_Click">
                     <TextBlock TextWrapping="Wrap" Text="Редактирование Материалов"/>
                 </Button>
-                <Button x:Name="EditTourBtn" Margin="5" Height="50" Click="EditTourBtn_Click">
+                <Button x:Name="EditSuppliersBtn" Margin="5" Height="50" Click="EditSuppliersBtn_Click">
                     <TextBlock TextWrapping="Wrap" Text="Редактирование Поставщиков"/>
                 </Button>
-                <Button x:Name="ViewTourBtn" Margin="5" Height="50" Click="ViewTourBtn_Click">
+                <Button x:Name="ViewMaterialsBtn" Margin="5" Height="50" Click="ViewMaterialsBtn_Click">
                     <TextBlock TextWrapping="Wrap" Text="Просмотр Материалов"/>
+                </Button>
+                <Button x:Name="ViewSuppliersBtn" Margin="5" Height="50" Click="ViewSuppliersBtn_Click">
+                    <TextBlock TextWrapping="Wrap" Text="Просмотр Поставщиков"/>
                 </Button>
                 <Button x:Name="EditUsersBtn" Margin="5" Height="50" Click="EditUsersBtn_Click" Visibility="Collapsed">
                     <TextBlock TextWrapping="Wrap" Text="Редактирование пользователей"/>

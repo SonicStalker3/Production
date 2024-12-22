@@ -1,30 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Input;
+using System.Windows.Shapes;
 using Production.DB;
-using Production.Pages.EditingPages;
 
 namespace Production.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для MaterialsEditPage.xaml
+    /// Логика взаимодействия для MaterialsViewPage.xaml
     /// </summary>
-    public partial class MaterialsEditPage : Page
+    public partial class MaterialsViewPage : Page
     {
         ProductionEntities _context = DBContext.GetContext();
         private ObservableCollection<Material> _allMaterials = new ObservableCollection<Material>();
         public ObservableCollection<Material> Materials { get; set; } = new ObservableCollection<Material>();
         public ObservableCollection<MaterialType> MaterialTypes { get; set; } = new ObservableCollection<MaterialType>();
-        public MaterialsEditPage()
+        public MaterialsViewPage()
         {
             DataContext = this;
 
@@ -85,22 +90,20 @@ namespace Production.Pages
             }
             catch (Exception ex)
             {
+                // Логирование или обработка исключения
                 Debug.WriteLine($"Ошибка при загрузке материалов: {ex.Message}");
             }
         }
 
         private void Image_Loaded(object sender, RoutedEventArgs e)
         {
-            if(sender is System.Windows.Controls.Image image)
+            if (sender is System.Windows.Controls.Image image &&
+                (image.Source == null ||
+                string.IsNullOrWhiteSpace((image.Source as BitmapImage).UriSource?.ToString()
+                )))
             {
-                if (image.DataContext is Material material)
-                {
-                    if (material.Image == null || material.Image.Length == 0)
-                    {
-                        BitmapImage errorImage = BitmapToBitmapImage(Properties.Resources.ErrorImage);
-                        image.Source = errorImage;
-                    }
-                }
+                BitmapImage errorImage = BitmapToBitmapImage(Properties.Resources.ErrorImage);
+                image.Source = errorImage;
             }
         }
 
@@ -121,27 +124,9 @@ namespace Production.Pages
             }
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new MaterialEditPage(null));
-        }
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
-        }
-
-        private void Material_Selected(object sender, MouseButtonEventArgs e)
-        {
-            if ((sender as ListView).SelectedItem is Material selectedMaterial)
-            {
-                NavigationService.Navigate(new MaterialEditPage(selectedMaterial));
-            }
-        }
-
-        private void Materials_Selected(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         private void ApplyFilters()
@@ -208,7 +193,7 @@ namespace Production.Pages
             {
                 SortPlaceholderText.Visibility = Visibility.Visible;
             }
-            
+
         }
 
         private void FiltrationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -220,5 +205,6 @@ namespace Production.Pages
         {
             ApplyFilters();
         }
+
     }
 }
