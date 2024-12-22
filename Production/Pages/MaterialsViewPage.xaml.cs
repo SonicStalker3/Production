@@ -1,82 +1,98 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Input;
+using System.Windows.Shapes;
 using Production.DB;
-using Production.Pages.EditingPages;
-using System.Windows.Media.Media3D;
 
 namespace Production.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для SuppliersEditPage.xaml
+    /// Логика взаимодействия для MaterialsViewPage.xaml
     /// </summary>
-    public partial class SuppliersEditPage : Page
+    public partial class MaterialsViewPage : Page
     {
-
         ProductionEntities _context = DBContext.GetContext();
-        private ObservableCollection<Supplier> _allSuppliers { get; set; } = new ObservableCollection<Supplier>();
-        public ObservableCollection<Supplier> Suppliers { get; set; } = new ObservableCollection<Supplier>();
-        public ObservableCollection<BusinessType> BusinessTypes { get; set; } = new ObservableCollection<BusinessType>();
+<<<<<<< HEAD
+        private ObservableCollection<Material> _allMaterials = new ObservableCollection<Material>();
+        public ObservableCollection<Material> Materials { get; set; } = new ObservableCollection<Material>();
+        public ObservableCollection<MaterialType> MaterialTypes { get; set; } = new ObservableCollection<MaterialType>();
+        public MaterialsViewPage()
+        {
+            DataContext = this;
 
-        public SuppliersEditPage()
+            var materialTypes = DBContext.GetContext().MaterialTypes.ToList();
+
+            // Создание нового типа "Все"
+            var allMaterialTypes = new MaterialType
+            {
+                Tittle = "Все",
+                MaterialTypeID = -1
+            };
+
+            materialTypes.Insert(0, allMaterialTypes);
+
+
+            MaterialTypes = new ObservableCollection<MaterialType>(materialTypes);
+
+            var materials = DBContext.GetContext().Materials.Include(m => m.MaterialType).OrderBy(x => x.Name).ToList();
+            _allMaterials = new ObservableCollection<Material>(materials);
+
+            LoadMaterialsAsync();
+
+=======
+        public ObservableCollection<Material> Materials { get; set; } = new ObservableCollection<Material>();
+        public MaterialsViewPage()
         {
             this.DataContext = this;
-            var supplierTypes = DBContext.GetContext().BusinessTypes.ToList();
-            var allSupplierTypes = new BusinessType
-            {
-                Title = "Все",
-                BusinessTypeID = -1
-            };
-            supplierTypes.Insert(0, allSupplierTypes);
-
-            BusinessTypes = new ObservableCollection<BusinessType>(supplierTypes);
-
-            var suppliers = DBContext.GetContext().Suppliers.Include(m => m.BusinessType).OrderBy(x => x.Name).ToList();
-            _allSuppliers = new ObservableCollection<Supplier>(suppliers);
-
-            LoadSuppliersAsync();
+            Task task = LoadMaterialsAsync();
+>>>>>>> eb1eb0843f5f9581465f5ec84967de79941456fc
             InitializeComponent();
-            
-            
         }
-        private async Task LoadSuppliersAsync()
+
+        private async Task LoadMaterialsAsync()
         {
             try
             {
                 int batchSize = 10;
                 int skip = 0;
-                bool moreSuppliers = true;
+                bool moreMaterials = true;
 
-                while (moreSuppliers)
+                while (moreMaterials)
                 {
-                    var loadedSuppliers = await _context.Suppliers
-                        .Include(m => m.Materials)
-                        .OrderBy(m => m.SupplierID)
+                    var loadedMaterials = await _context.Materials
+                        .Include(m => m.MaterialUnitType)
+                        .Include(m => m.MaterialType)
+                        .OrderBy(m => m.MaterialID)
                         .Skip(skip)
                         .Take(batchSize)
                         .ToListAsync();
 
-                    if (loadedSuppliers.Count > 0)
+                    if (loadedMaterials.Count > 0)
                     {
-                        foreach (var supplier in loadedSuppliers)
+                        foreach (var material in loadedMaterials)
                         {
-                            Suppliers.Add(supplier);
+                            Materials.Add(material);
                         }
 
                         skip += batchSize;
                     }
                     else
                     {
-                        moreSuppliers = false;
+                        moreMaterials = false;
                     }
                 }
             }
@@ -116,72 +132,41 @@ namespace Production.Pages
             }
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new SupplierEditPage(null));
-        }
-
-        private void EditButtonClick(object sender, RoutedEventArgs e)
-        {
-/*            var selectedHotel = (sender as Button).DataContext as Отель;
-            NavigationService.Navigate(new AddEditHotelsPage(selectedHotel));*/
-        }
-
+<<<<<<< HEAD
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
-        }
-        private void Supplier_Selected(object sender, MouseButtonEventArgs e)
-        { 
-            if ((sender as ListView).SelectedItem is Supplier selectedSupplier)
-            {
-                NavigationService.Navigate(new SupplierEditPage(selectedSupplier));
-            }
-        }
-
-        private void Suppliers_Selected(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void ApplyFilters()
         {
             var searchText = SearchTextBox.Text.ToLower();
-            var filteredSuppliers = _allSuppliers.AsEnumerable();
+            var filteredMaterials = _allMaterials.AsEnumerable();
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-<<<<<<< HEAD
-                
-                filteredSuppliers = filteredSuppliers.Where(t =>
-                    t.INN.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                filteredMaterials = filteredMaterials.Where(t =>
+                    t.MaterialType.Tittle.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     t.Name.Replace('c', 'с').Replace('C', 'С').IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
-=======
-                filteredSuppliers = filteredSuppliers.Where(t =>
-                    t.INN.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    t.Name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
->>>>>>> eb1eb0843f5f9581465f5ec84967de79941456fc
             }
 
-            if (FiltrationComboBox.SelectedItem is BusinessType selectedType)
+            if (FiltrationComboBox.SelectedItem is MaterialType selectedType)
             {
-                if (selectedType.BusinessTypeID != -1)
+                if (selectedType.MaterialTypeID != -1)
                 {
-                    filteredSuppliers = filteredSuppliers.Where(t => t.BusinessType == selectedType);
+                    filteredMaterials = filteredMaterials.Where(t => t.MaterialType == selectedType);
                 }
             }
 
-            Suppliers.Clear();
-            foreach (var tour in filteredSuppliers.OrderBy(t => t.Name))
+            Materials.Clear();
+            foreach (var tour in filteredMaterials.OrderBy(t => t.Name))
             {
-                Suppliers.Add(tour);
+                Materials.Add(tour);
             }
         }
 
-        private void SortComboBox_GotFocus(object sender, RoutedEventArgs e)
-        {
 
-        }
+
         private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             SearchPlaceholderText.Visibility = Visibility.Collapsed;
@@ -192,6 +177,17 @@ namespace Production.Pages
             if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
                 SearchPlaceholderText.Visibility = Visibility.Visible;
+            }
+        }
+        private void SortComboBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SortPlaceholderText.Visibility = Visibility.Collapsed;
+        }
+        private void SortComboBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                SortPlaceholderText.Visibility = Visibility.Visible;
             }
         }
 
@@ -218,8 +214,8 @@ namespace Production.Pages
         {
             ApplyFilters();
         }
-       
 
-        
+=======
+>>>>>>> eb1eb0843f5f9581465f5ec84967de79941456fc
     }
 }

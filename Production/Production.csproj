@@ -130,6 +130,9 @@
     <Compile Include="Pages\EditingPages\MaterialSuppliersEditPage.xaml.cs">
       <DependentUpon>MaterialSuppliersEditPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SuppliersViewPage.xaml.cs">
+      <DependentUpon>SuppliersViewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\SupplierViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -170,11 +173,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MaterialViewPage.xaml">
+    <Page Include="Pages\MaterialsViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SuppliersEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SuppliersViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -195,8 +202,8 @@
     <Compile Include="Pages\MaterialsEditPage.xaml.cs">
       <DependentUpon>MaterialsEditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MaterialViewPage.xaml.cs">
-      <DependentUpon>MaterialViewPage.xaml</DependentUpon>
+    <Compile Include="Pages\MaterialsViewPage.xaml.cs">
+      <DependentUpon>MaterialsViewPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SuppliersEditPage.xaml.cs">
       <DependentUpon>SuppliersEditPage.xaml</DependentUpon>

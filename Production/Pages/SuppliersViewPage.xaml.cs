@@ -1,33 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Data.Entity;
 using System.Linq;
+using System.Data.Entity;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Input;
+using System.Windows.Shapes;
 using Production.DB;
-using Production.Pages.EditingPages;
-using System.Windows.Media.Media3D;
 
 namespace Production.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для SuppliersEditPage.xaml
+    /// Логика взаимодействия для SuppliersViewPage.xaml
     /// </summary>
-    public partial class SuppliersEditPage : Page
+    public partial class SuppliersViewPage : Page
     {
-
         ProductionEntities _context = DBContext.GetContext();
         private ObservableCollection<Supplier> _allSuppliers { get; set; } = new ObservableCollection<Supplier>();
         public ObservableCollection<Supplier> Suppliers { get; set; } = new ObservableCollection<Supplier>();
         public ObservableCollection<BusinessType> BusinessTypes { get; set; } = new ObservableCollection<BusinessType>();
-
-        public SuppliersEditPage()
+        public SuppliersViewPage()
         {
             this.DataContext = this;
             var supplierTypes = DBContext.GetContext().BusinessTypes.ToList();
@@ -45,8 +47,6 @@ namespace Production.Pages
 
             LoadSuppliersAsync();
             InitializeComponent();
-            
-            
         }
         private async Task LoadSuppliersAsync()
         {
@@ -115,33 +115,40 @@ namespace Production.Pages
                 return bitmapImage;
             }
         }
-
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new SupplierEditPage(null));
+            SearchPlaceholderText.Visibility = Visibility.Collapsed;
         }
 
-        private void EditButtonClick(object sender, RoutedEventArgs e)
+        private void SearchTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-/*            var selectedHotel = (sender as Button).DataContext as Отель;
-            NavigationService.Navigate(new AddEditHotelsPage(selectedHotel));*/
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                SearchPlaceholderText.Visibility = Visibility.Visible;
+            }
+        }
+        private void SortComboBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FiltrationComboBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SortPlaceholderText.Visibility = Visibility.Collapsed;
+        }
+
+        private void FiltrationComboBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                SortPlaceholderText.Visibility = Visibility.Visible;
+            }
+
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
-        }
-        private void Supplier_Selected(object sender, MouseButtonEventArgs e)
-        { 
-            if ((sender as ListView).SelectedItem is Supplier selectedSupplier)
-            {
-                NavigationService.Navigate(new SupplierEditPage(selectedSupplier));
-            }
-        }
-
-        private void Suppliers_Selected(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void ApplyFilters()
@@ -151,14 +158,11 @@ namespace Production.Pages
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-<<<<<<< HEAD
-                
                 filteredSuppliers = filteredSuppliers.Where(t =>
                     t.INN.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+<<<<<<< HEAD
                     t.Name.Replace('c', 'с').Replace('C', 'С').IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
 =======
-                filteredSuppliers = filteredSuppliers.Where(t =>
-                    t.INN.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     t.Name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
 >>>>>>> eb1eb0843f5f9581465f5ec84967de79941456fc
             }
@@ -177,38 +181,6 @@ namespace Production.Pages
                 Suppliers.Add(tour);
             }
         }
-
-        private void SortComboBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            SearchPlaceholderText.Visibility = Visibility.Collapsed;
-        }
-
-        private void SearchTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
-            {
-                SearchPlaceholderText.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void FiltrationComboBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            SortPlaceholderText.Visibility = Visibility.Collapsed;
-        }
-
-        private void FiltrationComboBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
-            {
-                SortPlaceholderText.Visibility = Visibility.Visible;
-            }
-
-        }
-
         private void FiltrationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ApplyFilters();
@@ -218,8 +190,5 @@ namespace Production.Pages
         {
             ApplyFilters();
         }
-       
-
-        
     }
 }

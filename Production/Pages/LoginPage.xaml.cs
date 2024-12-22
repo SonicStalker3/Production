@@ -40,16 +40,14 @@ namespace Production.Pages
                 // Выдача привилегий
                 //AssignPrivileges(user);
 
-                if (user.RoleID == 0)
+                if (user.RoleID != 2)
                 {
                     NavigationService.Navigate(new EditViewChoicePage(user));
                 }
                 else
                 {
-                    NavigationService.Navigate(new MaterialViewPage());
+                    NavigationService.Navigate(new MaterialsViewPage());
                 }
-
-                //NavigationService.Navigate(new HotelPage());
             }
             else
             {
@@ -62,7 +60,7 @@ namespace Production.Pages
             var user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.UserName == username);
             if (user != null && user.PasswordHash == HashPassword(password))
             {
-                return user; // Возвращаем пользователя, если пароли совпадают
+                return user;
             }
             //Clipboard.SetText(HashPassword(password));
 
