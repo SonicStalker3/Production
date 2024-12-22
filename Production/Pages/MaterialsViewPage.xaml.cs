@@ -26,7 +26,6 @@ namespace Production.Pages
     public partial class MaterialsViewPage : Page
     {
         ProductionEntities _context = DBContext.GetContext();
-<<<<<<< HEAD
         private ObservableCollection<Material> _allMaterials = new ObservableCollection<Material>();
         public ObservableCollection<Material> Materials { get; set; } = new ObservableCollection<Material>();
         public ObservableCollection<MaterialType> MaterialTypes { get; set; } = new ObservableCollection<MaterialType>();
@@ -53,13 +52,6 @@ namespace Production.Pages
 
             LoadMaterialsAsync();
 
-=======
-        public ObservableCollection<Material> Materials { get; set; } = new ObservableCollection<Material>();
-        public MaterialsViewPage()
-        {
-            this.DataContext = this;
-            Task task = LoadMaterialsAsync();
->>>>>>> eb1eb0843f5f9581465f5ec84967de79941456fc
             InitializeComponent();
         }
 
@@ -132,7 +124,6 @@ namespace Production.Pages
             }
         }
 
-<<<<<<< HEAD
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
@@ -215,7 +206,5 @@ namespace Production.Pages
             ApplyFilters();
         }
 
-=======
->>>>>>> eb1eb0843f5f9581465f5ec84967de79941456fc
     }
 }
